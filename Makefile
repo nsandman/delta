@@ -3,10 +3,10 @@ QMU := $(shell which qemu-system-x86_64)
 GCC := $(shell which gcc)
 LNK := $(shell which ld)
 
-CFL = -c -ffreestanding -nostdinc -Iinclude -nostdlib -std=c99
-OUT = out/boot_asm.o out/main.o
+CFL = -c -ffreestanding -Iinclude -nostdlib -nostdinc -std=c99
+OUT = out/main.o
 
-all: out out/delta/bmfs_mbr.sys out/delta/pure64.sys $(OUT) out/delta/kernel64.sys out/delta.image
+all: out out/delta/bmfs_mbr.sys out/delta/pure64.sys out/boot_asm.o $(OUT) out/delta/kernel64.sys out/delta.image
 
 # Instead of running the provided "build.sh"
 include contrib/pure64/Makefile
