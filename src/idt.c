@@ -96,7 +96,7 @@ void idt_set_gate(uint8_t n, uint64_t base, uint16_t sel, uint8_t flags) {
 	idt->also_zero = 0;
 
 	// Set the base bytes
-	idt->base_low = base & 0xffff;
-	idt->base_mid = (base >> 16) & 0xffff;
-	idt->base_hi  = (base >> 32) & 0xffffffff;
+	idt->base_low  = base & 0xffff;
+	idt->base_mid  = (base >> 16) & 0xffff;
+	idt->base_hi   = (base >> 32) & 0xffffffff;
 }
