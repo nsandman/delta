@@ -3,10 +3,11 @@ QMU := $(shell which qemu-system-x86_64)
 GCC := $(shell which gcc)
 LNK := $(shell which ld)
 
-CFL = -c -ffreestanding -Iinclude -nostdlib -nostdinc -std=c99
-OUT = out/main.o
+CFL = -c -ffreestanding -Wno-implicit-function-declaration -finline-functions \
+-Iinclude -nostdlib -nostdinc -std=c99 -fno-stack-protector -mno-red-zone
+OUT = out/main.o out/interrupt_asm.o out/interrupt.o out/idt.o out/vsprintf.o
 
-all: out out/delta/bmfs_mbr.sys out/delta/pure64.sys out/boot_asm.o $(OUT) out/delta/kernel64.sys out/delta.image
+all: out out/delta/bmfs_mbr.sys out/delta/pure64.sys out/boot_asm.o $(OUT) out/delta/kernel.sys out/delta.image
 
 # Instead of running the provided "build.sh"
 include contrib/pure64/Makefile
@@ -20,10 +21,10 @@ out/%_asm.o: src/%.asm
 out/%.o: src/%.c
 	$(GCC) $(CFL) -o$@ $<
 
-out/delta/kernel64.sys: $(OUT)
+out/delta/kernel.sys: $(OUT)
 	$(LNK) -Tlink.ld $^ -o$@
 
-out/delta.image: out/delta/bmfs_mbr.sys out/delta/pure64.sys out/delta/kernel64.sys
+out/delta.image: out/delta/bmfs_mbr.sys out/delta/pure64.sys out/delta/kernel.sys
 	bmfs $@ initialize 6M $^
 
 clean:

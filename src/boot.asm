@@ -5,6 +5,6 @@ extern kmain
 
 section .text
 	start:
-		cli
+		cli				; Halt interrupts
 		call kmain
 		hlt
