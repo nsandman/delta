@@ -62,10 +62,10 @@ isr_common_stub:
 	push rcx
 	push rax
 
-	mov ax, ds               ; Lower 16-bits of eax = ds.
-	push rax                 ; save the data segment descriptor
+	mov ax, ds
+	push rax
 
-	mov ax, 0x10  ; load the kernel data segment descriptor
+	mov ax, 0x10
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
@@ -73,7 +73,7 @@ isr_common_stub:
 
 	call isr_handler
 
-	pop rax        ; reload the original data segment descriptor
+	pop rax
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
@@ -86,7 +86,7 @@ isr_common_stub:
 	pop rbx
 	pop rdx
 	pop rcx
-	pop rax                     ; Pops edi,esi,ebp...
-	add rsp, 8     ; Cleans up the poped error code and pushed ISR number
+	pop rax
+	add rsp, 8
 	sti
 	iretq
