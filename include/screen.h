@@ -89,31 +89,4 @@ void puts(const char* data) {
 		putchar(*data);
 }
 
-void put_dec(uint32_t n) {
-    if (n == 0) {
-        putchar('0');
-        return;
-    }
-
-    int32_t acc = n;
-    char c[32];
-    int i = 0;
-    while (acc > 0)
-    {
-        c[i] = '0' + acc%10;
-        acc /= 10;
-        i++;
-    }
-    c[i] = 0;
-
-    char c2[32];
-    c2[i--] = 0;
-    int j = 0;
-    while(i >= 0)
-    {
-        c2[i--] = c[j++];
-    }
-    puts(c2);
-}
-
 #endif

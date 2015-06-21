@@ -31,4 +31,4 @@ clean:
 	rm -rf out
 
 qemu: out/delta.image
-	$(QMU) -hda $< -name "Delta"
+	$(QMU) -smp 2 -hda $< -name "Delta"
