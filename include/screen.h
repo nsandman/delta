@@ -2,91 +2,52 @@
 #define SCREEN_H
 
 #include <stdint.h>
-#include <system.h>
-#include <string_functions.h>
 
-int cursorX = 0, cursorY = 0;
-const uint8_t sw = 80,sh = 25,sd = 2;                                                     //We define the screen width, height, and depth.
+// So all our functions have easy access to VBE data
+// This info table is constructed by Pure64, and the
+// way to see what data is where is on this webpage:
+// ctyme.com/intr/rb-0274.htm
+typedef struct vesa_important_stuff {
+	uint16_t pitch;		// AKA "bytes per scanline", offset 0x10
+	uint32_t lfb_addr;	// Linear frame buffer physical address, offset 0x28
+	uint8_t  pixel_w;	// Pixel width. Divide bits per pixel (off. 0x19) by 8
+	uint16_t height;	// Screen height. Pure64 finds this for us and puts it at 0x5044.
+	uint16_t width;		// Screen width. Pure64 loads this at 0x5046.
+	uint8_t  depth;		// Color depth. Size of red mask + blue mask + green mask?
+} vbe_info_t;
 
-void clearLine(uint8_t from,uint8_t to) {
-	uint16_t i = sw * from * sd;
-	char* vidmem=(char*)0xb8000;
-	for(;i<(sw*(to+1)*sd);i++, vidmem++)
-		*vidmem = 0x0;
+vbe_info_t *vbe_block;
+char       *vidmem;
+
+// NOTE: This function isn't very well commented since info 
+// on how to find anything, and what any particular variable
+// is for is in the "struct vesa_important_stuff" code.
+void init_vid() {
+	// Non-VBE stuff first (Pure64 loads this for us)
+	vbe_block->height   = *((uint16_t*)0x5044);
+	vbe_block->width    = *((uint16_t*)0x5046);
+
+	vbe_block->pitch    = *((uint16_t*)0x5c10);
+	vbe_block->lfb_addr = *((uint32_t*)0x5c28);
+
+	vbe_block->pixel_w  = ((*((uint8_t*)0x5c19))/8);
+	vbe_block->depth    = (*(uint8_t*)0x5c1f)+(*(uint8_t*)0x5c21)+(*(uint8_t*)0x5c23);
+	vidmem              = (char*)vbe_block->lfb_addr;	// Set the vidmem pointer to the LFB address
 }
 
-void updateCursor() {
-	unsigned temp = cursorY * sw + cursorX;  // Position = (y * width) +  x
-	outb(0x3D4, 14);              // CRT Control Register: Select Cursor Location
-	outb(0x3D5, temp >> 8);       // Send the high byte across the bus
-	outb(0x3D4, 15);              // CRT Control Register: Select Send Low byte
-	outb(0x3D5, temp);            // Send the Low byte of the cursor location
+static void putpixel(unsigned char* screen, int x,int y, int color) {
+    unsigned where = x*3 + y*2400;
+    screen[where] = color & 255;              // BLUE
+    screen[where + 1] = (color >> 8) & 255;   // GREEN
+    screen[where + 2] = (color >> 16) & 255;  // RED
 }
 
-void cls() {
-	clearLine(0,sh-1);
-	cursorX = 0;
-	cursorY = 0;
-	updateCursor();
-}
-
-void scrollUp(uint8_t lineNumber) {
-	char* vidmem = (char*)0xb8000;
-	uint16_t i = 0;
-	for (i;i<sw*(sh-1)*sd;i++)
-		vidmem[i] = vidmem[i+sw*sd*lineNumber];
-	clearLine(sh-1-lineNumber,sh-1);
-	if((cursorY - lineNumber) < 0 ) {
-		cursorY = 0;
-		cursorX = 0;
-	} else 
-		cursorY -= lineNumber;
-	updateCursor();
-}
-
-
-void newLineCheck() {
-	if(cursorY >=sh-1)
-		scrollUp(1);
-}
-
-void putchar(char c) {
-	char* vidmem = (char*)0xb8000;     
-	switch(c) {
-		case 0x08:
-			if(cursorX > 0) 
-			{
-				cursorX--;									
-				vidmem[(cursorY * sw + cursorX)*sd]=0x00;	                              
-			}
-			break;
-		case 0x09:    
-			cursorX = (cursorX + 8) & ~(8 - 1); 
-			break;
-		case '\r':
-			cursorX = 0;
-			break;
-		case '\n':
-			cursorX = 0;
-			cursorY++;
-			break;
-		default:
-			vidmem [((cursorY * sw + cursorX))*sd] = c;
-			vidmem [((cursorY * sw + cursorX))*sd+1] = 0x0F;
-			cursorX++; 
-			break;
-	}
-	if(cursorX >= sw) {
-		cursorX = 0;
-		cursorY++;
-	}
-	newLineCheck();
-	updateCursor();
-}
-
+// The only original screen.h function that still works in VESA mode
+/*
 void puts(const char* data) {
 	for (; *data != '\0'; data++)
 		putchar(*data);
 }
+*/
 
 #endif
