@@ -17,7 +17,7 @@ typedef struct vesa_important_stuff {
 } vbe_info_t;
 
 vbe_info_t *vbe_block;
-char       *vidmem;
+uint8_t    *vidmem;
 
 // NOTE: This function isn't very well commented since info 
 // on how to find anything, and what any particular variable
@@ -32,14 +32,14 @@ void init_vid() {
 
 	vbe_block->pixel_w  = ((*((uint8_t*)0x5c19))/8);
 	vbe_block->depth    = (*(uint8_t*)0x5c1f)+(*(uint8_t*)0x5c21)+(*(uint8_t*)0x5c23);
-	vidmem              = (char*)vbe_block->lfb_addr;	// Set the vidmem pointer to the LFB address
+	vidmem              = (uint8_t*)vbe_block->lfb_addr;	// Set the vidmem pointer to the LFB address
 }
 
-static void putpixel(unsigned char* screen, int x,int y, int color) {
-    unsigned where = x*3 + y*2400;
-    screen[where] = color & 255;              // BLUE
-    screen[where + 1] = (color >> 8) & 255;   // GREEN
-    screen[where + 2] = (color >> 16) & 255;  // RED
+void putpixel(uint8_t* scrn, uint32_t x, uint32_t y, uint32_t color) {
+    uint32_t loc  = (x*vbe_block->pixel_w)+(y*vbe_block->pitch);
+    scrn[loc]     = color & 255;
+    scrn[loc+1]   = (color >> 8) & 255;
+    scrn[loc+2]   = (color >> 16) & 255;
 }
 
 // The only original screen.h function that still works in VESA mode
