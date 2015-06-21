@@ -24,8 +24,8 @@ uint8_t    *vidmem;
 // is for is in the "struct vesa_important_stuff" code.
 void init_vid() {
 	// Non-VBE stuff first (Pure64 loads this for us)
-	vbe_block->height   = *((uint16_t*)0x5044);
-	vbe_block->width    = *((uint16_t*)0x5046);
+	vbe_block->height   = *((uint16_t*)0x5046);
+	vbe_block->width    = *((uint16_t*)0x5044);
 
 	vbe_block->pitch    = *((uint16_t*)0x5c10);
 	vbe_block->lfb_addr = *((uint32_t*)0x5c28);
