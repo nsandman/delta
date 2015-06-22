@@ -7,7 +7,7 @@ LNK := $(shell which $(TOOLPREFIX)ld)
 
 CFL = -c -ffreestanding -Wno-implicit-function-declaration -finline-functions \
 -Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
-OUT = out/main.o out/interrupt_asm.o out/interrupt.o out/idt.o out/io.o
+OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o string_asm.o out/screen.o out/idt.o out/io.o
 
 all: out out/delta/bmfs_mbr.sys out/delta/pure64.sys out/boot_asm.o $(OUT) out/delta/kernel.sys out/delta.image
 
