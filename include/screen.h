@@ -2,7 +2,7 @@
 #define _SCREEN_
 
 #include <stdint.h>
-#include <notcouriersans/notcouriersans.h>      // This is the font. Believe it or not, it's not courier sans.
+#include <notcouriersans/font_defs.h>      // This is the font. Believe it or not, it's not courier sans.
 
 // So all our functions have easy access to VBE data
 // This info table is constructed by Pure64, and the
@@ -19,9 +19,6 @@ typedef struct {
 
 vbe_info_t *vbe_block; 
 uint8_t    *vidmem;
-
-// Emulated cursor positions
-uint32_t global_x = 0, global_y = 0;
 
 // The offset of a character. The font bitmaps start at ASCII 32, so
 // a space would be NotCourierSans_Bitmaps[0]. The difference is 32.

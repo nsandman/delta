@@ -15,6 +15,9 @@ void init_vid() {
         vidmem              = (uint8_t*)vbe_block->lfb_addr;    // Set the vidmem pointer to the LFB address
 }
 
+// Simulated cursor positions
+uint32_t global_x = 0, global_y = 0;
+
 void putpixel(uint32_t x, uint32_t y, uint32_t color) {
     uint32_t loc    = (x*vbe_block->pixel_w)+(y*vbe_block->pitch);
     vidmem[loc]     = color & 255;
