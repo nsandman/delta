@@ -35,5 +35,5 @@ out/delta.image: out/delta/bmfs_mbr.sys out/delta/pure64.sys out/delta/kernel.sy
 clean:
 	rm -rf out
 
-qemu: out/delta.image
-	$(QMU) -smp 2 -hda $< -name "Delta"
+qemu: all
+	$(QMU) -smp 2 -hda out/delta.image -name "Delta"

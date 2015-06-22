@@ -2,12 +2,13 @@
 #define SCREEN_H
 
 #include <stdint.h>
+#include <notcouriersans/notcouriersans.h>	// This is the font. It's not courier sans.
 
 // So all our functions have easy access to VBE data
 // This info table is constructed by Pure64, and the
 // way to see what data is where is on this webpage:
 // ctyme.com/intr/rb-0274.htm
-typedef struct vesa_important_stuff {
+typedef struct {
 	uint16_t pitch;		// AKA "bytes per scanline", offset 0x10
 	uint32_t lfb_addr;	// Linear frame buffer physical address, offset 0x28
 	uint8_t  pixel_w;	// Pixel width. Divide bits per pixel (off. 0x19) by 8
@@ -21,9 +22,8 @@ uint8_t    *vidmem;
 
 // NOTE: This function isn't very well commented since info 
 // on how to find anything, and what any particular variable
-// is for is in the "struct vesa_important_stuff" code.
+// is for is in the "vbe_info_t" code.
 void init_vid() {
-	// Non-VBE stuff first (Pure64 loads this for us)
 	vbe_block->height   = *((uint16_t*)0x5c14);
 	vbe_block->width    = *((uint16_t*)0x5c12);
 

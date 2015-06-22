@@ -13,7 +13,8 @@ int kmain() {
 	printf("        Pitch:  %d\n        LFB:    %p", *((uint16_t*)0x5C10), *((uint32_t*)0x5C28));
 	*/
 	init_vid();
-	putpixel(vidmem, (vbe_block->width/2), (vbe_block->height/2), 0xff0000);
+	putpixel(vidmem, (vbe_block->width-1)/2, (vbe_block->height-1)/2, 0xffffff);
+	//putchar('a');
 	//idt_init();
 	return 0xdea1;
 }
