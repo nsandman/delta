@@ -11,8 +11,8 @@ typedef struct vesa_important_stuff {
 	uint16_t pitch;		// AKA "bytes per scanline", offset 0x10
 	uint32_t lfb_addr;	// Linear frame buffer physical address, offset 0x28
 	uint8_t  pixel_w;	// Pixel width. Divide bits per pixel (off. 0x19) by 8
-	uint16_t height;	// Screen height. Pure64 finds this for us and puts it at 0x5044.
-	uint16_t width;		// Screen width. Pure64 loads this at 0x5046.
+	uint16_t height;	// Screen height. Offset 0x14.
+	uint16_t width;		// Screen width. Offset 0x12.
 	uint8_t  depth;		// Color depth. Size of red mask + blue mask + green mask?
 } vbe_info_t;
 
@@ -24,8 +24,8 @@ uint8_t    *vidmem;
 // is for is in the "struct vesa_important_stuff" code.
 void init_vid() {
 	// Non-VBE stuff first (Pure64 loads this for us)
-	vbe_block->height   = *((uint16_t*)0x5046);
-	vbe_block->width    = *((uint16_t*)0x5044);
+	vbe_block->height   = *((uint16_t*)0x5c14);
+	vbe_block->width    = *((uint16_t*)0x5c12);
 
 	vbe_block->pitch    = *((uint16_t*)0x5c10);
 	vbe_block->lfb_addr = *((uint32_t*)0x5c28);

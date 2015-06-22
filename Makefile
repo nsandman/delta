@@ -16,6 +16,10 @@ include contrib/pure64/Makefile
 out:
 	mkdir -p out/delta/
 
+# So if we change any headers, main.c will get recompiled
+out/main.o: src/main.c include/*.h
+	$(GCC) $(CFL) -o$@ $<
+
 out/%_asm.o: src/%.asm
 	$(ASM) -felf64 -o$@ $<
 
