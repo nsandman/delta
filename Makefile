@@ -1,7 +1,9 @@
+include config.local
+
 ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
-GCC := $(shell which gcc)
-LNK := $(shell which ld)
+GCC := $(shell which $(TOOLPREFIX)gcc)
+LNK := $(shell which $(TOOLPREFIX)ld)
 
 CFL = -c -ffreestanding -Wno-implicit-function-declaration -finline-functions \
 -Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
