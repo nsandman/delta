@@ -1,0 +1,17 @@
+Instructions for changing the font:
+
+1. Get BMFont from http://www.angelcode.com/products/bmfont/. I'm developing on Ubuntu,
+   so just get Wine (sudo apt-get install wine), run the installer, and then run BMFont
+   (wine ~/.wine/drive_c/Program\ Files\ \(x86\)/AngelCode/BMFont/bmfont.exe).
+
+2. In BMFont, press "F". Select "Add Font File" and choose the TTF in this folder.
+
+3. If "Font Smoothing" is checked, deselect it. Now choose your character height.
+
+4. In "Export Options", make sure "Font Descriptor" is set to XML, and "Textures" is set to PNG.
+
+5. Select the main ASCII characters (Space through "~").
+
+6. Press Control-S. Choose to overwrite notcouriersans.fnt.
+
+7. Run bmfont2c.py and rebuild Delta. Your font is changed!
