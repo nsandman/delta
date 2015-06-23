@@ -12,6 +12,6 @@ Instructions for changing the font:
 
 5. Select the main ASCII characters (Space through "~").
 
-6. Press Control-S. Choose to overwrite notcouriersans.fnt.
+6. Press Control-S. Choose to overwrite vcr_osd_mono.fnt.
 
 7. Run bmfont2c.py and rebuild Delta. Your font is changed!
