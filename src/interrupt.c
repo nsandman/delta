@@ -23,7 +23,11 @@ const char *exceptions[] = {
 };
 
 void isr_handler(registers_t regs) {
-	//printf("Got interrupt %d (%s)!\n",regs.int_no,regs.int_no<18)?exceptions[regs.int_no]:"Reserved";
+	cputs("Got interrupt ", 0xff0000);
+	printf("%d",regs.int_no);
+	cputs(" (", 0xff0000);
+	cputs(regs.int_no<18?exceptions[regs.int_no]:"Reserved", 0xff0000);
+	cputs(")!", 0xff0000);
 	for(;;)
 		__asm__("hlt");
 }

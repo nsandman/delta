@@ -18,7 +18,7 @@ out:
 	mkdir -p out/
 
 # So if we change any headers, main.c will get recompiled
-out/main.o: src/main.c include/*.h include/notcouriersans/*.h
+out/main.o: src/main.c include/*.h
 	$(GCC) $(CFL) -o$@ $<
 
 out/%_asm.o: src/%.asm
