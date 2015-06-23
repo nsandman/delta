@@ -26,7 +26,7 @@ uint8_t    *vidmem;
 #define CHAR_SIZE    36
 #define CURR_FONT    NotCourierSans_Bitmaps             // In case we ever want to change fonts
 
-void init_vid();
+void vid_init();
 void putpixel(uint32_t, uint32_t, uint32_t);
 void putchar(char);
 void puts(const char*);

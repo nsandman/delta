@@ -4,7 +4,7 @@
 // NOTE: This function isn't very well commented since info 
 // on how to find anything, and what any particular variable
 // is for is in screen.h.
-void init_vid() {
+void vid_init() {
         vbe_block->width    = *((uint16_t*)0x5c12);
         vbe_block->height   = *((uint16_t*)0x5c14);
 

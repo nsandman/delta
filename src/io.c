@@ -1,10 +1,11 @@
 #include <io.h>
+#include <screen.h>
 
 typedef unsigned char bool;
 #define false 0
 #define true  !false
 
-int __fputhex(int n, bool upper) {
+static int __fputhex(int n, bool upper) {
 	int tmp, p;
     char noZeroes = 1;
     int i;
@@ -29,7 +30,7 @@ int __fputhex(int n, bool upper) {
     return ++p;
 }
 
-char* itoa(int val, int base){
+static char* itoa(int val, int base){
 	static char buf[32] = {0};
 	int i = 30;
 	for(; val && i ; --i, val /= base)
@@ -59,7 +60,7 @@ int vprintf(const char *fmt, va_list arg) {
 				case 'd':
 					{
 						int n = va_arg(arg, int);
-						if (n == 0)
+						if (!n)
 							putchar('0');
 						else {
 							int acc = n;
@@ -89,7 +90,7 @@ int vprintf(const char *fmt, va_list arg) {
 					break;
 				case 'p':
 					puts("0x");
-					len += __fputhex((int)va_arg(arg, void*), false)-1;
+					len += __fputhex((int64_t)va_arg(arg, void*), false)-1;
 					break;
 				case 'n':
 					{
