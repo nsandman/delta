@@ -2,7 +2,7 @@
 #define _SCREEN_
 
 #include <stdint.h>
-#include <vcr_osd_mono/font_defs.h>      // This is the font. Believe it or not, it's not courier sans.
+#include <vcr_osd_mono/font_defs.h>      // This is the font.
 
 // So all our functions have easy access to VBE data
 // This info table is constructed by Pure64, and the
