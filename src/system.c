@@ -59,32 +59,29 @@ static block_meta_t *find_free_block(size_t size) {
 void *malloc(size_t size) {
 	if (!free_block_index)		// If free_blocks is already empty, null it out so there's no cruft
 		memset(free_blocks, 0, sizeof(free_blocks));
-	size_t new_size = __2pow_rndup(size);
+	size = __2pow_rndup(size);
 	block_meta_t *last = malloc_last;
 	block_meta_t *ptr;
-	if (!(ptr = find_free_block(new_size)))
-		ptr = extend_heap(new_size+sizeof(block_meta_t));
+	// If a suitable free block isn't found, extend the heap
+	if (!(ptr = find_free_block(size)))
+		ptr = extend_heap(size+sizeof(block_meta_t));
+	// If BOTH of those didn't fail (ptr isn't null)
 	if (ptr) {
-		if (malloc_last) {
-			if (last) {
-				last->next=ptr;
-			}
+		if (malloc_last) {	// If this isn't the first time malloc() was run
+			if (last)
+				last->next=ptr;		// Make the last linked list entry point to ptr
 		} else {
 			malloc_first = malloc_last;
-			malloc_last = extend_heap(new_size+sizeof(block_meta_t));
-			malloc_last->next=NULL;
-			malloc_last->size=new_size;
-			malloc_last->isfree=0;
-			return malloc_last+1;
+			goto return_ptr;			// Yeah, goto came in handy. Go figure.
 		}
-		ptr->isfree=0;
-		ptr->size=new_size;
-		ptr->next=NULL;
-		malloc_last=ptr;
-		return ptr+1;		// We've been messing with the header this whole time... return the data AFTER it.
-	} else {
-		return NULL;
+		return_ptr:
+			malloc_last=ptr;
+			ptr->isfree=0;
+			ptr->size=size;
+			ptr->next=NULL;
+			return ptr+1; // We've been messing with the header this whole time... return the data AFTER it.
 	}
+	return NULL;		// If an error occurred, return a null pointer.
 }
 
 void *calloc(size_t nmemb, size_t size) {
