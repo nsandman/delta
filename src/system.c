@@ -74,6 +74,7 @@ void *malloc(size_t size) {
 		}
 		return_ptr:
 			malloc_last=ptr;
+			ptr->magic=0xff;
 			ptr->isfree=0;
 			ptr->size=size;
 			ptr->next=NULL;
@@ -82,6 +83,7 @@ void *malloc(size_t size) {
 	return NULL;		// If an error occurred, return a null pointer.
 }
 
+// This isn't technically standards-compliant, but... screw it.
 void *calloc(size_t nmemb, size_t size) {
 	size_t alloc_sz = size*nmemb;
 	void *ptr = malloc(alloc_sz);
@@ -91,11 +93,15 @@ void *calloc(size_t nmemb, size_t size) {
 }
 
 void free(void *ptr) {
+	/*
 	if (!ptr)
 		return;			// Exit if null pointer is passed
-	block_meta_t *block_data = (block_meta_t*)ptr-1;	// We want the block's header.
-	if (block_data->isfree)
-		return;				// Exit if the block is already freed
+	block_meta_t *block_data = (block_meta_t*)(ptr-1);	// We want the block's header.
+	if (block_data->isfree || block_data->magic != 0xff)
+		puts("NO");
+		return;				// Exit if the block is already freed or wrong magic number
 	free_blocks[free_block_index++] = block_data;
 	block_data->isfree=1;
+	*/
+	// Do nothing for now; we can't get the pointer's header. That's a problem.
 }
