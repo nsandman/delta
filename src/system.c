@@ -60,7 +60,6 @@ void *malloc(size_t size) {
 	if (!free_block_index)		// If free_blocks is already empty, null it out so there's no cruft
 		memset(free_blocks, 0, sizeof(free_blocks));
 	size = __2pow_rndup(size);
-	block_meta_t *last = malloc_last;
 	block_meta_t *ptr;
 	// If a suitable free block isn't found, extend the heap
 	if (!(ptr = find_free_block(size)))
