@@ -2,12 +2,29 @@
 #define SYSTEM_H
 
 #include <stdint.h>
+#include <stddef.h>
+
+#define HEAP_START 0xc000000
+#define HEAP_IN_SZ 0x00000	// Initial heap size
+#define HEAP_MAX   1000000
+
+typedef struct {
+	size_t size;
+	void *next;
+	uint8_t isfree;
+} block_meta_t;	
 
 uint8_t inb (uint16_t);
 void outb (uint16_t, uint8_t);
 
-#ifndef NULL
-#	define NULL ((void*)0)
-#endif
+// Functions used internally by the malloc() family
+void *extend_heap(intptr_t);	// Like sbrk(), but not really (see system.c)
+static size_t __2pow_rndup(size_t); // Round up to the nearest power of two
+static block_meta_t *find_free_block(size_t);	// Find free block with a certain size
+
+// malloc() and friends
+void *malloc(size_t);
+void *calloc(size_t, size_t);
+void free(void*);
 
 #endif

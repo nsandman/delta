@@ -3,11 +3,11 @@ include config.local
 ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
 GCC := $(shell which $(TOOLPREFIX)gcc)
-LNK := $(shell which $(TOOLPREFIX)ld)
 
 CFL = -c -ffreestanding -finline-functions \
 -Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
-OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o out/string_asm.o out/screen.o out/idt.o out/io.o
+OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o \
+out/strings.o out/screen.o out/idt.o out/io.o
 
 all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys out/delta.image
 
@@ -28,7 +28,7 @@ out/%.o: src/%.c
 	$(GCC) $(CFL) -o$@ $<
 
 out/kernel.sys: $(OUT)
-	$(LNK) -Tlink.ld $^ -o$@
+	$(GCC) -nostdlib -lgcc -static-libgcc -Tlink.ld $^ -o$@
 
 out/delta.image: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
 	bmfs $@ initialize 6M $^

@@ -4,6 +4,7 @@
 // 
 
 #include <stdint.h>
+#include <stddef.h>
 #include "font_defs.h"
 
 static uint8_t const VCR_OSD_Mono_Bitmaps[3420] = 

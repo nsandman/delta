@@ -5,10 +5,14 @@
 #define DELTA_VERSION 13276
 
 int kmain() {
+	idt_init();
 	vid_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);
-	puts("Initializing the interrupt descriptor table... ");
-	idt_init();
-	cputs("OK.\n", 0x00ff00);
+	char *c = malloc(3);
+	char *d = malloc(46);
+	printf("c: %p\nd: %p\n", c, d);
+	free(d);
+	char *e = malloc(8);
+	printf("e: %p", e);
 	return 0xdea1;
 }

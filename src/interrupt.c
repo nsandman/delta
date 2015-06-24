@@ -1,4 +1,6 @@
 #include <interrupt.h>
+#include <io.h>
+#include <screen.h>
 
 const char *exceptions[] = {
 	"Division by zero",
