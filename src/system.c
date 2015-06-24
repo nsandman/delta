@@ -68,8 +68,7 @@ void *malloc(size_t size) {
 	// If BOTH of those didn't fail (ptr isn't null)
 	if (ptr) {
 		if (malloc_last) {	// If this isn't the first time malloc() was run
-			if (last)
-				last->next=ptr;		// Make the last linked list entry point to ptr
+			malloc_last->next=ptr;		// Make the last linked list entry point to ptr
 		} else {
 			malloc_first = malloc_last;
 			goto return_ptr;			// Yeah, goto came in handy. Go figure.
