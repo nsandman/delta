@@ -49,16 +49,17 @@ uint8_t free_block_index = 0;	// The place to add the next free block.
 
 static block_meta_t *find_free_block(size_t size) {
 	for (uint8_t i = 0; i < free_block_index; i++)
-		if (free_blocks[i]->size==size && free_blocks[i]->isfree) // Just in case
-			return free_blocks[i];
+		if (free_blocks[i]->size==size && free_blocks[i]->isfree) { // Just in case
+			block_meta_t *r = free_blocks[i];
+			free_blocks[i] = (block_meta_t*)0;
+			return r;
+		}
 	return NULL;
 }
 
 // Delta's implementation of malloc() is partially based
 // off info from http://www.danluu.com/malloc-tutorial.
-void *malloc(size_t size) {
-	if (!free_block_index)		// If free_blocks is already empty, null it out so there's no cruft
-		memset(free_blocks, 0, sizeof(free_blocks));
+void *malloc(size_t size) {		
 	size = __2pow_rndup(size);
 	block_meta_t *ptr;
 	// If a suitable free block isn't found, extend the heap
@@ -68,16 +69,17 @@ void *malloc(size_t size) {
 	if (ptr) {
 		if (malloc_last) {	// If this isn't the first time malloc() was run
 			malloc_last->next=ptr;		// Make the last linked list entry point to ptr
-		} else {
+		} else {		// This is the first time running
 			malloc_first = malloc_last;
+			memset(free_blocks, 0, sizeof(free_blocks));		// Null out free_blocks to remove cruft
 			goto return_ptr;			// Yeah, goto came in handy. Go figure.
 		}
 		return_ptr:
-			malloc_last=ptr;
 			ptr->magic=0xff;
 			ptr->isfree=0;
 			ptr->size=size;
 			ptr->next=NULL;
+			malloc_last=ptr;
 			return ptr+1; // We've been messing with the header this whole time... return the data AFTER it.
 	}
 	return NULL;		// If an error occurred, return a null pointer.
@@ -93,12 +95,12 @@ void *calloc(size_t nmemb, size_t size) {
 }
 
 void free(void *ptr) {
-	/*
 	if (!ptr)
 		return;			// Exit if null pointer is passed
-	block_meta_t *block_data = (block_meta_t*)(ptr-1);	// We want the block's header.
+	block_meta_t *block_data = (block_meta_t*)(ptr-sizeof(block_meta_t));	// We want the block's header.
+	printf("\nSize: %d\nFree: %d\nMagic: %p\n\n", (uint32_t)block_data, block_data->isfree, block_data);
+	/*
 	if (block_data->isfree || block_data->magic != 0xff)
-		puts("NO");
 		return;				// Exit if the block is already freed or wrong magic number
 	free_blocks[free_block_index++] = block_data;
 	block_data->isfree=1;

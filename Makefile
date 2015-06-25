@@ -21,11 +21,11 @@ out:
 out/main.o: src/main.c include/*.h
 	$(GCC) $(CFL) -o$@ $<
 
-out/%_asm.o: src/%.asm
-	$(ASM) -felf64 -o$@ $<
+out/%_asm.o:
+	$(ASM) -felf64 -o$@ `find src -name $(*F).asm`
 
-out/%.o: src/%.c
-	$(GCC) $(CFL) -o$@ $<
+out/%.o:
+	$(GCC) $(CFL) -o$@ `find src -name $(*F).c`
 
 out/kernel.sys: $(OUT)
 	$(GCC) -nostdlib -lgcc -static-libgcc -Tlink.ld $^ -o$@
