@@ -4,7 +4,7 @@ ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
 GCC := $(shell which $(TOOLPREFIX)gcc)
 
-CFL = -c -ffreestanding -finline-functions \
+CFL = -c -ffreestanding -finline-functions -Wall -Wextra \
 -Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o \
 out/strings.o out/screen.o out/idt.o out/io.o

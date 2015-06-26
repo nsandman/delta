@@ -1,5 +1,6 @@
 #include <system.h>
 #include <stringf.h>
+#include <io.h>
 
 uint32_t heap_cs = HEAP_IN_SZ;	// Current heap size
 
@@ -24,16 +25,16 @@ void outb (uint16_t _port, uint8_t _data) {
 // Think sbrk(), but without all the sbrk(0) weirdness when calling it.
 // This is much simpler because it just returns a pointer to your new memory.
 void *extend_heap(intptr_t sz) {
-	size_t heapsize = heap_cs+(uint64_t)sz;
-	if (heapsize > HEAP_MAX)						// Don't let the heap get bigger than HEAP_MAX
+	size_t heapinc = (uint64_t)sz+sizeof(block_meta_t);
+	if (heap_cs + heapinc > HEAP_MAX)						// Don't let the heap get bigger than HEAP_MAX
 		return NULL;
-	void *block = (void*)(HEAP_START+heapsize);		// Pointer to sz bytes after heap end
-	heap_cs += (uint32_t)sz;	
-	return block-sz;		// Block is the end of the allocated memory, so return the beginning of it
+	void *block = (void*)(HEAP_START+heap_cs);		// Pointer to sz bytes after heap end
+	heap_cs += heapinc;	
+	return block;		// Block is the end of the allocated memory, so return the beginning of it
 }
 
 // Round up to the nearest power of two. Pretty self-explanatory.
-static size_t __2pow_rndup(size_t num) {
+size_t __2pow_rndup(size_t num) {
 	size_t i = 1;
 	while (i < num)
 		i *= 2;
@@ -47,7 +48,7 @@ block_meta_t *malloc_last = NULL, *malloc_first = NULL;
 block_meta_t *free_blocks[256];
 uint8_t free_block_index = 0;	// The place to add the next free block.
 
-static block_meta_t *find_free_block(size_t size) {
+block_meta_t *find_free_block(size_t size) {
 	for (uint8_t i = 0; i < free_block_index; i++)
 		if (free_blocks[i]->size==size && free_blocks[i]->isfree) { // Just in case
 			block_meta_t *r = free_blocks[i];
@@ -57,53 +58,44 @@ static block_meta_t *find_free_block(size_t size) {
 	return NULL;
 }
 
-// Delta's implementation of malloc() is partially based
-// off info from http://www.danluu.com/malloc-tutorial.
-void *malloc(size_t size) {		
-	size = __2pow_rndup(size);
-	block_meta_t *ptr;
-	// If a suitable free block isn't found, extend the heap
-	if (!(ptr = find_free_block(size)))
-		ptr = extend_heap(size+sizeof(block_meta_t));
-	// If BOTH of those didn't fail (ptr isn't null)
-	if (ptr) {
-		if (malloc_last) {	// If this isn't the first time malloc() was run
-			malloc_last->next=ptr;		// Make the last linked list entry point to ptr
-		} else {		// This is the first time running
-			malloc_first = malloc_last;
-			memset(free_blocks, 0, sizeof(free_blocks));		// Null out free_blocks to remove cruft
-			goto return_ptr;			// Yeah, goto came in handy. Go figure.
+// Delta's kernel-space implementation of malloc() is partially based
+// off info from http://www.danluu.com.
+void *malloc(size_t sz) {
+	if (sz) {
+		sz = __2pow_rndup(sz);
+		block_meta_t *ptr = extend_heap(sz);
+		if (!ptr)	// If both of those operations failed, return a null pointer.
+			return NULL;
+		if (malloc_last) {
+			ptr->prev = malloc_last;
+			malloc_last = malloc_last->next = ptr;
+		} else {
+			ptr->prev = NULL;
+			malloc_first = malloc_last = ptr;
 		}
-		return_ptr:
-			ptr->magic=0xff;
-			ptr->isfree=0;
-			ptr->size=size;
-			ptr->next=NULL;
-			malloc_last=ptr;
-			return ptr+1; // We've been messing with the header this whole time... return the data AFTER it.
+		ptr->size = sz;
+		printf("\nptr: %p %d", ptr, ptr->size);
+		ptr->next = NULL;
+		ptr->isfree = 0;
+		return ptr+1;
 	}
-	return NULL;		// If an error occurred, return a null pointer.
+	return NULL;
 }
 
-// This isn't technically standards-compliant, but... screw it.
 void *calloc(size_t nmemb, size_t size) {
-	size_t alloc_sz = size*nmemb;
-	void *ptr = malloc(alloc_sz);
-	if (ptr)
-		memset(&ptr, 0, alloc_sz);
-	return ptr;
+	size_t sz = size*nmemb;
+	void *ret = malloc(sz);
+	if (ret)
+		memset(&ret, 0, sz);
+	return ret;
 }
 
 void free(void *ptr) {
-	if (!ptr)
-		return;			// Exit if null pointer is passed
-	block_meta_t *block_data = (block_meta_t*)(ptr-sizeof(block_meta_t));	// We want the block's header.
-	printf("\nSize: %d\nFree: %d\nMagic: %p\n\n", (uint32_t)block_data, block_data->isfree, block_data);
-	/*
-	if (block_data->isfree || block_data->magic != 0xff)
-		return;				// Exit if the block is already freed or wrong magic number
-	free_blocks[free_block_index++] = block_data;
-	block_data->isfree=1;
-	*/
-	// Do nothing for now; we can't get the pointer's header. That's a problem.
+	if (ptr) {
+		block_meta_t *block = (block_meta_t*)ptr-1;
+		printf("\nfree %d\n", block->size);
+		block->isfree = 1;
+		if (block->isfree)
+			puts("This would be freed now.");
+	}
 }

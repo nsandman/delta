@@ -39,7 +39,7 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 
-static inline void change_idt_address(idt_desc_t **i, uint64_t addr) {
+void change_idt_address(idt_desc_t **i, uint64_t addr) {
 	*i = (idt_desc_t*)addr;
 }
 

@@ -1,5 +1,4 @@
 #include <io.h>
-#include <screen.h>
 
 typedef unsigned char bool;
 #define false 0
@@ -30,6 +29,7 @@ static int __fputhex(int n, bool upper) {
     return ++p;
 }
 
+/*
 static char* itoa(int val, int base){
 	static char buf[32] = {0};
 	int i = 30;
@@ -37,6 +37,7 @@ static char* itoa(int val, int base){
 		buf[i] = "0123456789abcdef"[val % base];
 	return &buf[i+1];	
 }
+*/
 
 // This is my own, pretty clean (so I hope) implementation of vfprintf().
 // At least, I like it better than Torvalds's.
@@ -96,8 +97,7 @@ int vprintf(const char *fmt, va_list arg) {
 					{
 						int *i = va_arg(arg, int*);
 						// For some reason, *i=len+1 adds two to "i".
-						*i = len;
-						*i++; 
+						*i = len+1;
 					}
 					break;
 				case 'o':
@@ -105,9 +105,8 @@ int vprintf(const char *fmt, va_list arg) {
 						// Kind of a "meh" implementation of octal.
 						// It works, though... unfortunately, it can print only up to 64 characters.
 						char result[64];
-						int t = va_arg(arg, int), m = 0, i;
+						int t = va_arg(arg, int), m = 0;
 						do {
-							i = t % 8;
 							t /= 8;
 							int rem = t % 10;
 							result[m++] = t ? (rem > 9)? (rem-10) + 'a' : rem + '0' : '0';

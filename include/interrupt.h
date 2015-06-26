@@ -25,6 +25,6 @@ typedef struct idt_descriptor idt_desc_t;
 
 void idt_init();
 void idt_set_gate(uint8_t, uint64_t, uint16_t, uint8_t);
-static inline void change_idt_address(idt_desc_t**, uint64_t);
+void change_idt_address(idt_desc_t**, uint64_t);
 
 #endif

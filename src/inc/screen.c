@@ -40,7 +40,7 @@ void cputchar(char c, uint32_t color) {
 				uint32_t char_idx = ((c-CHAR_OFFSET)*CHAR_SIZE);          // Each array character in the array is 36 bytes
 				for (uint8_t a = 0; a < CHAR_SIZE; a+=2) {					 // Loop through each byte
 					for (uint8_t b = 15; b != 0; b--) {                       // Loop through each bit of that byte
-						if ((CURR_FONT[char_idx + ((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1)
+						if ((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1)
 							putpixel(startx, starty, color);             // If it's 1, put a pixel
 						startx++;										 // Each row is 2 bytes
 					}

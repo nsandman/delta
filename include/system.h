@@ -11,6 +11,7 @@
 typedef struct {
 	size_t size;
 	void *next;
+	void *prev;
 	uint8_t isfree;
 	uint8_t magic;
 } block_meta_t;	
@@ -20,8 +21,8 @@ void outb (uint16_t, uint8_t);
 
 // Functions used internally by the malloc() family
 void *extend_heap(intptr_t);	// Like sbrk(), but not really (see system.c)
-static size_t __2pow_rndup(size_t); // Round up to the nearest power of two
-static block_meta_t *find_free_block(size_t);	// Find free block with a certain size
+size_t __2pow_rndup(size_t); // Round up to the nearest power of two
+block_meta_t *find_free_block(size_t);	// Find free block with a certain size
 
 // malloc() and friends
 void *malloc(size_t);
