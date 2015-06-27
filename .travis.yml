@@ -1,7 +1,7 @@
 language: c
 
 before_install:
-  - sudo apt-get update; sudo apt-get install nasm qemu git
+  - sudo apt-get update; sudo apt-get install nasm qemu git autoconf
   - git clone git://github.com/returninfinity/bmfs b; cd b; autoreconf -fi; ./configure; make; sudo make install
   - rm -rf b
 
