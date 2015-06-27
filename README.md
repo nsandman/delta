@@ -1,4 +1,4 @@
-# Delta ![Travis Build](https://travis-ci.org/aventuretech/delta.svg?branch=master)
+# Delta [![Travis Build](https://travis-ci.org/aventuretech/delta.svg?branch=master)](https://travis-ci.org/aventuretech/delta)
 
 Delta is a lightweight x86-64 OS. It is loaded by the [Pure64 bootloader](https://github.com/ReturnInfinity/Pure64), and so is quick and efficient. 
 
