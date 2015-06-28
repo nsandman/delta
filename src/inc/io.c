@@ -5,7 +5,7 @@ typedef unsigned char bool;
 #define true  !false
 
 static int __fputhex(int n, bool upper) {
-	int tmp, p;
+	int tmp, p = 0;
     char noZeroes = 1;
     int i;
     for (i = 28; i > 0; i -= 4) {

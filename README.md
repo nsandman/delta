@@ -39,6 +39,8 @@ rm -rf bmfs
 Then, just do:
 
 ```
+autoconf
+./configure
 make qemu
 ```
-To build and test in qemu. Or to just build, run `make`. The BMFS image (that could theoretically also be a boot partition) will be in the folder `out`, and be named `delta.image`.
+To build and test in qemu. Or to just build, run `make` instead of `make qemu`. The BMFS image (that could theoretically also be a boot partition) will be in the folder `out`, and be named `delta.image`.

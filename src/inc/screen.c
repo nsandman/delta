@@ -11,7 +11,7 @@ void vid_init() {
 	vbe_block->pixel_w  = ((*((uint8_t*)0x5c19))/8);
 	vbe_block->height   = *((uint16_t*)0x5c14);
 	vbe_block->width    = *((uint16_t*)0x5c12);
-	vbe_block->depth    = (*(uint8_t*)0x5c1f)+(*(uint8_t*)0x5c21)+(*(uint8_t*)0x5c23);
+	vbe_block->depth    = (*(uint8_t*)0x5c1f) + (*(uint8_t*)0x5c21) + (*(uint8_t*)0x5c23);
 	vidmem              = (uint8_t*)vbe_block->lfb_addr;    // Set the global vidmem pointer to the LFB address
 }
 

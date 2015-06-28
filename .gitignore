@@ -1,3 +1,9 @@
 out
 out/*
-config.local
+
+configure 
+config.log 
+config.local 
+autom4te.cache 
+Makefile 
+config.status

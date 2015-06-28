@@ -8,6 +8,8 @@
 // This info table is constructed by Pure64, and the
 // way to see what data is where is on this webpage:
 // ctyme.com/intr/rb-0274.htm
+// "ofsett xxx" is the offset from the beginning of 
+// the VBE info table structure.
 typedef struct {
 	uint16_t pitch;         // AKA "bytes per scanline", offset 0x10
 	uint32_t lfb_addr;      // Linear frame buffer physical address, offset 0x28

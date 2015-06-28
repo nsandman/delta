@@ -28,7 +28,7 @@ void *extend_heap(intptr_t sz) {
 	size_t heapinc = (uint64_t)sz+sizeof(block_meta_t);
 	if (heap_cs + heapinc > HEAP_MAX)						// Don't let the heap get bigger than HEAP_MAX
 		return NULL;
-	void *block = (void*)(HEAP_START+heap_cs);		// Pointer to sz bytes after heap end
+	void *block = (void*)HEAP_START+heap_cs;		// Pointer to sz bytes after heap end
 	heap_cs += heapinc;	
 	return block;		// Block is the end of the allocated memory, so return the beginning of it
 }
@@ -58,26 +58,34 @@ block_meta_t *find_free_block(size_t size) {
 	return NULL;
 }
 
+void set_vals(size_t size, block_meta_t** ptr) {
+	block_meta_t *p2;
+	p2->size   = size;
+	p2->next   = NULL;
+	p2->isfree = 0;
+	*ptr = &p2;
+} 
+
 // Delta's kernel-space implementation of malloc() is partially based
 // off info from http://www.danluu.com.
 void *malloc(size_t sz) {
 	if (sz) {
 		sz = __2pow_rndup(sz);
-		block_meta_t *ptr = extend_heap(sz);
+		block_meta_t *previous = malloc_last;
+
+		// I know this *shouldn't* be a double pointer, but for some reason
+		// it doesn't write to the struct when I set values if it's a single.
+		block_meta_t **ptr     = extend_heap(sz);
 		if (!ptr)	// If both of those operations failed, return a null pointer.
 			return NULL;
 		if (malloc_last) {
-			ptr->prev = malloc_last;
-			malloc_last = malloc_last->next = ptr;
+			malloc_last  = previous->next = *ptr;
 		} else {
-			ptr->prev = NULL;
-			malloc_first = malloc_last = ptr;
+			malloc_first = malloc_last = *ptr;
 		}
-		ptr->size = sz;
-		printf("\nptr: %p %d", ptr, ptr->size);
-		ptr->next = NULL;
-		ptr->isfree = 0;
-		return ptr+1;
+		// The setting of the values is screwing up the print function :/
+		set_vals(sz, ptr);
+		return (*ptr)+1;
 	}
 	return NULL;
 }
@@ -93,9 +101,7 @@ void *calloc(size_t nmemb, size_t size) {
 void free(void *ptr) {
 	if (ptr) {
 		block_meta_t *block = (block_meta_t*)ptr-1;
-		printf("\nfree %d\n", block->size);
-		block->isfree = 1;
-		if (block->isfree)
-			puts("This would be freed now.");
+		//printf("\nfree %d\n", block->size);
+		printf("%d", block->size);
 	}
 }

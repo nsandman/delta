@@ -2,9 +2,10 @@ include config.local
 
 ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
-GCC := $(shell which $(TOOLPREFIX)gcc)
+GCC := $(shell which clang)
+LNK := $(shell which ld)
 
-CFL = -c -ffreestanding -finline-functions -Wall -Wextra \
+CFL = -c -ffreestanding -Wall -Wextra \
 -Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o \
 out/strings.o out/screen.o out/idt.o out/io.o
@@ -28,13 +29,13 @@ out/%.o:
 	$(GCC) $(CFL) -o$@ `find src -name $(*F).c`
 
 out/kernel.sys: $(OUT)
-	$(GCC) -nostdlib -lgcc -static-libgcc -Tlink.ld $^ -o$@
+	$(LNK) -Tlink.ld $^ -o$@
 
 out/delta.image: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
 	bmfs $@ initialize 6M $^
 
 clean:
-	rm -rf out
+	rm -rf out configure config.log config.local autom4te.cache Makefile config.status
 
 qemu: all
 	$(QMU) -smp 2 -hda out/delta.image -name "Delta"

@@ -4,14 +4,13 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define HEAP_START 0xf000000
+#define HEAP_START 0xc000000
 #define HEAP_IN_SZ 0x00000	// Initial heap size
 #define HEAP_MAX   1000000
 
 typedef struct {
 	size_t size;
 	void *next;
-	void *prev;
 	uint8_t isfree;
 	uint8_t magic;
 } block_meta_t;	

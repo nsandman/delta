@@ -9,7 +9,7 @@ char *strcat(char *dest, const char *src) {
 }
 
 size_t strlen(const char *str) {
-	size_t i;
+	size_t i = 0;
 	while (str[++i]);
 	return i;
 }
