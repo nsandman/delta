@@ -2,7 +2,7 @@ include config.local
 
 ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
-GCC := $(shell which clang)
+GCC := $(shell which $(TOOLPREFIX)gcc)
 LNK := $(shell which ld)
 
 CFL = -c -ffreestanding -Wall -Wextra \

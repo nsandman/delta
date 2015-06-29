@@ -11,6 +11,12 @@ if test "$HAVE_NASM" = "no"; then
 	AC_MSG_ERROR([Delta must be compiled with nasm. Get it from http://nasm.us.])
 fi
 
+# Check for bmfs utility
+AC_CHECK_PROG(HAVE_BMFS, bmfs, yes, no)
+if test "$HAVE_BMFS" = "no"; then
+	AC_MSG_ERROR([Please install "bmfs" from git://github.com/returninfinity/bmfs.git!])
+fi
+
 TOOLPREFIX=""
 
 # Check for C compiler and binutils
