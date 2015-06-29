@@ -7,4 +7,6 @@ before_install:
   - rm -rf b
 
 script:
+  - autoconf
+  - ./configure
   - make
