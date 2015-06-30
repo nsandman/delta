@@ -69,8 +69,6 @@ void set_vals(size_t size, block_meta_t** ptr) {
 // Delta's kernel-space implementation of malloc() is partially based
 // off info from http://www.danluu.com.
 void *malloc(size_t size) {
-	if (!free_block_index)		// If free_blocks is already empty, null it out so there's no cruft
-		memset(free_blocks, 0, sizeof(free_blocks));
 	size = __2pow_rndup(size);
 	block_meta_t *last = malloc_last;
 	block_meta_t *ptr;
@@ -82,6 +80,7 @@ void *malloc(size_t size) {
 		if (malloc_last) {	// If this isn't the first time malloc() was run
 			malloc_last->next=ptr;		// Make the last linked list entry point to ptr
 		} else {
+			memset(&free_blocks, 0, sizeof(free_blocks));
 			malloc_first = malloc_last;
 			goto return_ptr;			// Yeah, goto came in handy. Go figure.
 		}
