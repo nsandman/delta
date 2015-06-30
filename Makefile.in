@@ -2,15 +2,16 @@ include config.local
 
 ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
-GCC := $(shell which $(TOOLPREFIX)gcc)
+GCC := $(shell which clang)
 LNK := $(shell which $(TOOLPREFIX)ld)
 BKS := $(shell which bochs)
 
-CFL = -c -ffreestanding -Wall -Wextra \
--Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
-OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o \
+CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
+-fno-stack-protector -mno-red-zone
+OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o
 
+# Directories to search in
 VPATH = src:src/inc:src/asm
 
 all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys out/delta.image
@@ -41,7 +42,7 @@ clean:
 	rm -rf out
 
 qemu: all
-	$(QMU) -smp 2 -hda out/delta.image -name "Delta"
+	$(QMU) -smp 2 -hda out/delta.image -m 256M -name "Delta"
 
 bochs: all
 	$(BKS) -q

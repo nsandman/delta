@@ -25,7 +25,6 @@ block_meta_t *find_free_block(size_t);	// Find free block with a certain size
 
 // malloc() and friends
 void *malloc(size_t);
-void *calloc(size_t, size_t);
 void free(void*);
 
 #endif

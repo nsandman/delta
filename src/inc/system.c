@@ -53,24 +53,16 @@ block_meta_t *find_free_block(size_t size) {
 		if (free_blocks[i]->size==size && free_blocks[i]->isfree) { // Just in case
 			block_meta_t *r = free_blocks[i];
 			free_blocks[i] = (block_meta_t*)0;
+			free_block_index--;
 			return r;
 		}
 	return NULL;
 }
 
-void set_vals(size_t size, block_meta_t** ptr) {
-	block_meta_t *p2;
-	p2->size   = size;
-	p2->next   = NULL;
-	p2->isfree = 0;
-	*ptr = &p2;
-} 
-
 // Delta's kernel-space implementation of malloc() is partially based
 // off info from http://www.danluu.com.
 void *malloc(size_t size) {
 	size = __2pow_rndup(size);
-	block_meta_t *last = malloc_last;
 	block_meta_t *ptr;
 	// If a suitable free block isn't found, extend the heap
 	if (!(ptr = find_free_block(size)))
@@ -92,14 +84,6 @@ void *malloc(size_t size) {
 			return ptr+1; // We've been messing with the header this whole time... return the data AFTER it.
 	}
 	return NULL;		// If an error occurred, return a null pointer.
-}
-
-void *calloc(size_t nmemb, size_t size) {
-	size_t alloc_sz = size*nmemb;
-	void *ptr = malloc(alloc_sz);
-	if (ptr)
-		memset(&ptr, 0, alloc_sz);
-	return ptr;
 }
 
 void free(void *ptr) {
