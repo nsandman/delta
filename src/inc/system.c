@@ -42,7 +42,7 @@ size_t __2pow_rndup(size_t num) {
 }
 
 // The first and last entries in our linked list
-block_meta_t **malloc_last = NULL, **malloc_first = NULL;
+block_meta_t *malloc_last = NULL, *malloc_first = NULL;
 
 // An array of free blocks and their header addresses.
 block_meta_t *free_blocks[256];
@@ -68,40 +68,47 @@ void set_vals(size_t size, block_meta_t** ptr) {
 
 // Delta's kernel-space implementation of malloc() is partially based
 // off info from http://www.danluu.com.
-void *malloc(size_t sz) {
-	if (sz) {
-		sz = __2pow_rndup(sz);
-		block_meta_t *previous = malloc_last;
-
-		// I know this *shouldn't* be a double pointer, but for some reason
-		// it doesn't write to the struct when I set values if it's a single.
-		block_meta_t **ptr     = extend_heap(sz);
-		if (!ptr)	// If both of those operations failed, return a null pointer.
-			return NULL;
-		if (malloc_last) {
-			malloc_last  = previous->next = *ptr;
+void *malloc(size_t size) {
+	if (!free_block_index)		// If free_blocks is already empty, null it out so there's no cruft
+		memset(free_blocks, 0, sizeof(free_blocks));
+	size = __2pow_rndup(size);
+	block_meta_t *last = malloc_last;
+	block_meta_t *ptr;
+	// If a suitable free block isn't found, extend the heap
+	if (!(ptr = find_free_block(size)))
+		ptr = extend_heap(size+sizeof(block_meta_t));
+	// If BOTH of those didn't fail (ptr isn't null)
+	if (ptr) {
+		if (malloc_last) {	// If this isn't the first time malloc() was run
+			malloc_last->next=ptr;		// Make the last linked list entry point to ptr
 		} else {
-			malloc_first = malloc_last = *ptr;
+			malloc_first = malloc_last;
+			goto return_ptr;			// Yeah, goto came in handy. Go figure.
 		}
-		// The setting of the values is screwing up the print function :/
-		set_vals(sz, ptr);
-		return (*ptr)+1;
+		return_ptr:
+			malloc_last=ptr;
+			ptr->isfree=0;
+			ptr->size=size;
+			ptr->next=NULL;
+			return ptr+1; // We've been messing with the header this whole time... return the data AFTER it.
 	}
-	return NULL;
+	return NULL;		// If an error occurred, return a null pointer.
 }
 
 void *calloc(size_t nmemb, size_t size) {
-	size_t sz = size*nmemb;
-	void *ret = malloc(sz);
-	if (ret)
-		memset(&ret, 0, sz);
-	return ret;
+	size_t alloc_sz = size*nmemb;
+	void *ptr = malloc(alloc_sz);
+	if (ptr)
+		memset(&ptr, 0, alloc_sz);
+	return ptr;
 }
 
 void free(void *ptr) {
-	if (ptr) {
-		block_meta_t *block = (block_meta_t*)ptr-1;
-		//printf("\nfree %d\n", block->size);
-		printf("%d", block->size);
-	}
+	if (!ptr)
+		return;			// Exit if null pointer is passed
+	block_meta_t *block_data = (block_meta_t*)ptr-1;	// We want the block's header.
+	if (block_data->isfree)
+		return;				// Exit if the block is already freed
+	free_blocks[free_block_index++] = block_data;
+	block_data->isfree=1;
 }
