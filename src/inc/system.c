@@ -42,7 +42,7 @@ size_t __2pow_rndup(size_t num) {
 }
 
 // The first and last entries in our linked list
-block_meta_t *malloc_last = NULL, *malloc_first = NULL;
+block_meta_t **malloc_last = NULL, **malloc_first = NULL;
 
 // An array of free blocks and their header addresses.
 block_meta_t *free_blocks[256];

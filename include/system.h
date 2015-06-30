@@ -13,7 +13,7 @@ typedef struct {
 	void *next;
 	uint8_t isfree;
 	uint8_t magic;
-} block_meta_t;	
+} block_meta_t;
 
 uint8_t inb (uint16_t);
 void outb (uint16_t, uint8_t);
