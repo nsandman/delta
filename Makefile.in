@@ -3,7 +3,8 @@ include config.local
 ASM := $(shell which nasm)
 QMU := $(shell which qemu-system-x86_64)
 GCC := $(shell which $(TOOLPREFIX)gcc)
-LNK := $(shell which ld)
+LNK := $(shell which $(TOOLPREFIX)ld)
+BKS := $(shell which bochs)
 
 CFL = -c -ffreestanding -Wall -Wextra \
 -Iinclude -nostdlib -std=c99 -fno-stack-protector -mno-red-zone
@@ -35,7 +36,10 @@ out/delta.image: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
 	bmfs $@ initialize 6M $^
 
 clean:
-	rm -rf out configure config.log config.local autom4te.cache Makefile config.status
+	rm -rf out
 
 qemu: all
 	$(QMU) -smp 2 -hda out/delta.image -name "Delta"
+
+bochs: all
+	$(BKS) -q

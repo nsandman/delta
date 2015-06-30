@@ -7,3 +7,6 @@ config.local
 autom4te.cache 
 Makefile 
 config.status
+
+copy.txt
+snapshot.tzt

@@ -28,12 +28,12 @@ if test "$PLATFORM" = "Linux"; then
 		AC_MSG_ERROR([It appears that your system does not have functioning GNU binutils.])
 	fi
 elif test "$PLATFORM" = "Darwin"; then
-	AC_CHECK_PROG(HAVE_BINUTILS, x86-elf-ld, yes, no)
+	AC_CHECK_PROG(HAVE_BINUTILS, x86_64-elf-ld, yes, no)
 	if test "$HAVE_BINUTILS" = "no"; then
-		AC_MSG_ERROR([You need to install x86-elf-binutils (and probably x86-elf-gcc) from Macports!])
+		AC_MSG_ERROR([You need to install x86_64-elf-binutils (and probably x86_64-elf-gcc) from Macports!])
 	fi
-	AC_PROG_CC([x86-elf-gcc])
-	TOOLPREFIX="x86-elf-"
+	AC_PROG_CC([x86_64-elf-gcc])
+	TOOLPREFIX="x86_64-elf-"
 else
 	AC_MSG_ERROR([Your operating system is not supported!])
 fi

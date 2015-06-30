@@ -1,0 +1,8 @@
+megs: 1024
+memory: guest=512, host=256
+ata0-master: type=disk, path=out/delta.image, mode=flat, cylinders=306, heads=4, spt=17, translation=none
+boot: disk
+romimage: file=$BXSHARE/BIOS-bochs-latest
+vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
+log: /dev/null
+vga: extension=vbe
