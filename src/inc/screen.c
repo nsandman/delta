@@ -21,7 +21,7 @@ uint32_t global_x = 0, global_y = 0;
 void putpixel(uint32_t x, uint32_t y, uint32_t color) {
 	uint32_t loc    = (x*vbe_block->pixel_w)+(y*vbe_block->pitch);
 	vidmem[loc]     = color & 255;
-	vidmem[loc+1]   = (color >> 8) & 255;
+	vidmem[loc+1]   = (color >> 8)  & 255;
 	vidmem[loc+2]   = (color >> 16) & 255;
 }
 
@@ -38,12 +38,18 @@ void cputchar(char c, uint32_t color) {
 		default:
 			{
 				uint32_t char_idx = ((c-CHAR_OFFSET)*CHAR_SIZE);          // Each array character in the array is 36 bytes
+				uint32_t px = 1;
 				for (uint8_t a = 0; a < CHAR_SIZE; a+=2) {					 // Loop through each byte
 					for (uint8_t b = 15; b != 0; b--) {                       // Loop through each bit of that byte
-						if ((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1)
-							putpixel(startx, starty, color);             // If it's 1, put a pixel
+						if ((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1) {
+							uint32_t loc  = ((startx*vbe_block->pixel_w)+px)-1;
+							vidmem[loc]   = color         & 255;
+							vidmem[loc+1] = (color >> 8)  & 255;
+							vidmem[loc+2] = (color >> 16) & 255;
+						}
 						startx++;										 // Each row is 2 bytes
-					}
+					} 
+					px += vbe_block->pitch;
 					startx=global_x;
 					starty++;
 				}

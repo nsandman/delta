@@ -8,10 +8,5 @@ int kmain() {
 	idt_init();
 	vid_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);
-	char *c = malloc(8);
-	printf("%p\n", c);
-	free(c);
-	char *d = malloc(8);
-	printf("%p", d);
 	return 0xdea1;
 }

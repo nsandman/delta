@@ -42,7 +42,7 @@ clean:
 	rm -rf out
 
 qemu: all
-	$(QMU) -smp 2 -hda out/delta.image -m 256M -name "Delta"
+	$(QMU) -m 265 -smp 2 -hda out/delta.image -name "Delta"
 
 bochs: all
 	$(BKS) -q
