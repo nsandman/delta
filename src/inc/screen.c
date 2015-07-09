@@ -38,18 +38,14 @@ void cputchar(char c, uint32_t color) {
 		default:
 			{
 				uint32_t char_idx = ((c-CHAR_OFFSET)*CHAR_SIZE);          // Each array character in the array is 36 bytes
-				uint32_t px = 1;
+				int loc = startx*vbe_block->pixel_w;
 				for (uint8_t a = 0; a < CHAR_SIZE; a+=2) {					 // Loop through each byte
 					for (uint8_t b = 15; b != 0; b--) {                       // Loop through each bit of that byte
-						if ((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1) {
-							uint32_t loc  = ((startx*vbe_block->pixel_w)+px)-1;
-							vidmem[loc]   = color         & 255;
-							vidmem[loc+1] = (color >> 8)  & 255;
-							vidmem[loc+2] = (color >> 16) & 255;
-						}
-						startx++;										 // Each row is 2 bytes
+						if ((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1)
+							putpixel(startx, starty, color);
+						loc += vbe_block->pitch;										 // Each row is 2 bytes
+						startx++;
 					} 
-					px += vbe_block->pitch;
 					startx=global_x;
 					starty++;
 				}
