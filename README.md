@@ -24,9 +24,24 @@ Delta versions are also going to be in alphabetical order (so there's no number 
 Yeah. In case you wanted to know.
 
 ###Build Instructions
-Building Delta is very simple. On Ubuntu, just install some prerequisites first (nasm, qemu, and [bmfs](https://github.com/ReturnInfinity/BMFS)):
+Building Delta is very simple. On Ubuntu, just install some prerequisites first (nasm and qemu):
 ``` bash
 sudo apt-get install nasm qemu
+```
+
+**NOTE**: If you are on OS X, Delta will not compile with Apple's nasm. You need to install MacPorts and get all project dependencies using this command:
+``` bash
+sudo port install x86_64-elf-binutils autoconf automake libtool nasm qemu
+```
+
+Or, if you happen to have Homebrew as well (yeah, I know you're technically not supposed to), you can install probably more up-to-date versions of everything *except* x86_64-elf-binutils, which *must* be either built from source or installed with MacPorts. In that case, just do:
+```bash
+brew install autoconf automake nasm qemu
+# However you're going to get binutils
+```
+
+However, on EVERY system, you need to build and install [BMFS](https://github.com/ReturnInfinity/BMFS).
+```
 git clone git://github.com/returninfinity/bmfs
 cd bmfs
 autoreconf -fi
