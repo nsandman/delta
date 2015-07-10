@@ -36,6 +36,6 @@ enum vfs_flags {
 	FS_PIPE        = 0x05,
 	FS_SYMLINK     = 0x06,
 	FS_MOUNTPOINT  = 0x08
-}
+};
 
 #endif
