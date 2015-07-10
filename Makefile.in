@@ -12,7 +12,7 @@ OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o
 
 # Directories to search in
-VPATH = src:src/inc:src/asm
+VPATH = src:src/inc:src/asm:src/fs
 
 all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys out/delta.image
 
