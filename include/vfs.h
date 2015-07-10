@@ -1,4 +1,4 @@
-s#ifndef _VFS_
+#ifndef _VFS_
 #define _VFS_
 
 #include <stdint.h>
