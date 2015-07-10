@@ -7,7 +7,7 @@ LNK := $(shell which $(TOOLPREFIX)ld)
 BKS := $(shell which bochs)
 
 CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
--fno-stack-protector -mno-red-zone
+-fno-stack-protector -mno-red-zone -target x86_64-elf
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o
 

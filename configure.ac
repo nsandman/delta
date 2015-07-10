@@ -32,7 +32,7 @@ elif test "$PLATFORM" = "Darwin"; then
 	if test "$HAVE_BINUTILS" = "no"; then
 		AC_MSG_ERROR([You need to install x86_64-elf-binutils (and probably x86_64-elf-gcc) from Macports!])
 	fi
-	AC_PROG_CC([x86_64-elf-gcc])
+	AC_PROG_CC([clang])
 	TOOLPREFIX="x86_64-elf-"
 else
 	AC_MSG_ERROR([Your operating system is not supported!])
