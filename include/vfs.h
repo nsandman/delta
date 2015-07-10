@@ -1,9 +1,16 @@
-#ifndef _VFS_
+s#ifndef _VFS_
 #define _VFS_
 
 // Most of this is based on JamesM's VFS, because that's
 // actually a pretty good one. So yeah.
-typedef struct vfs_node {
+typedef uint32_t (*read_type_t)(struct fs_node*,uint32_t,uint32_t,uint8_t*);
+typedef uint32_t (*write_type_t)(struct fs_node*,uint32_t,uint32_t,uint8_t*);
+typedef void (*open_type_t)(struct fs_node*);
+typedef void (*close_type_t)(struct fs_node*);
+typedef struct dirent * (*readdir_type_t)(struct fs_node*,uint32_t);
+typedef struct fs_node * (*finddir_type_t)(struct fs_node*,char *name);
+
+typedef struct fs_node {
 	char name[256];
 	uint32_t permissions;
 	uint32_t user;
@@ -16,17 +23,10 @@ typedef struct vfs_node {
 
 struct dirent {
 	char name[256];
-	u32int inode;
+	uint32_t inode;
 };
 
-typedef u32int (*read_type_t)(struct fs_node*,u32int,u32int,u8int*);
-typedef u32int (*write_type_t)(struct fs_node*,u32int,u32int,u8int*);
-typedef void (*open_type_t)(struct fs_node*);
-typedef void (*close_type_t)(struct fs_node*);
-typedef struct dirent * (*readdir_type_t)(struct fs_node*,u32int);
-typedef struct fs_node * (*finddir_type_t)(struct fs_node*,char *name);
-
-typedef enum vfs_flags {
+enum vfs_flags {
 	FS_FILE        = 0x01,
 	FS_DIRECTORY   = 0x02,
 	FS_CHARDEVICE  = 0x03,
