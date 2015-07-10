@@ -1,6 +1,8 @@
 s#ifndef _VFS_
 #define _VFS_
 
+#include <stdint.h>
+
 // Most of this is based on JamesM's VFS, because that's
 // actually a pretty good one. So yeah.
 typedef uint32_t (*read_type_t)(struct fs_node*,uint32_t,uint32_t,uint8_t*);
