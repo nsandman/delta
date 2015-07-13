@@ -25,3 +25,15 @@ closefs(vfs_node_t *node)
 	if (node->close) 
 		return node->close(node);
 }
+
+struct dirent*
+readdir_fs(vfs_node_t *node, uint32_t index)
+{
+    return ((node->flags&0x7)==FS_DIRECTORY&&node->readdir)?node->readdir(node,index):0;
+}
+
+vfs_node_t*
+finddir_fs(vfs_node_t *node, char *name)
+{
+    return ((node->flags&0x7)==FS_DIRECTORY&&node->finddir)?node->finddir(node,name):0;
+}
