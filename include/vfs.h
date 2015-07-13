@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+struct fs_node;
+
 // Most of this is based on JamesM's VFS, because that's
 // actually a pretty good one. So yeah.
 typedef uint32_t (*read_type_t)(struct fs_node*,uint32_t,uint32_t,uint8_t*);
@@ -20,8 +22,16 @@ typedef struct fs_node {
 	uint32_t flags;
 	uint32_t inode;
 	uint32_t size;
+	read_type_t read;
+	write_type_t write;
+	open_type_t open;
+	close_type_t close;
+	readdir_type_t readdir;
+	finddir_type_t finddir;
 	struct vfs_node *ptr;
 } vfs_node_t;
+
+extern fs_node_t *fs_root;
 
 struct dirent {
 	char name[256];
