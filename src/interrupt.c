@@ -24,7 +24,9 @@ const char *exceptions[] = {
 	"Machine check"
 };
 
-void isr_handler(registers_t regs) {
+void 
+isr_handler(registers_t regs) 
+{
 	cputs("\nGot interrupt ", 0xff0000);
 	printf("%d",regs.int_no);
 	cputs(" (", 0xff0000);

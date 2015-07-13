@@ -39,11 +39,15 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 
-void change_idt_address(idt_desc_t **i, uint64_t addr) {
+void 
+change_idt_address(idt_desc_t **i, uint64_t addr) 
+{
 	*i = (idt_desc_t*)addr;
 }
 
-void idt_init() {
+void 
+idt_init() 
+{
 	// Set our pointer to the IDT's location
 	change_idt_address(&idt, 0x0000000000000000);
 	idt_set_gate(0, (uint64_t)isr0, 0x08, 0x8e);
@@ -87,7 +91,9 @@ void idt_init() {
  * 16 bytes long (check idt_desc_t in interrupt.h), and seeing as there's no
  * offset, that's the location of entry number "n".
  */ 
-void idt_set_gate(uint8_t n, uint64_t base, uint16_t sel, uint8_t flags) {
+void 
+idt_set_gate(uint8_t n, uint64_t base, uint16_t sel, uint8_t flags) 
+{
 	change_idt_address(&idt, n*16);
 	// Now that we're there, set the simple flags
 	idt->sel       = sel;

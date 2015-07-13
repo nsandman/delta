@@ -5,7 +5,9 @@
 // on how to find anything, and what any particular variable
 // is for is in screen.h.
 
-void vid_init() {
+void 
+vid_init() 
+{
 	vbe_block->pitch    = *((uint16_t*)0x5c10);
 	vbe_block->lfb_addr = *((uint32_t*)0x5c28);
 	vbe_block->pixel_w  = ((*((uint8_t*)0x5c19))/8);
@@ -18,14 +20,18 @@ void vid_init() {
 // Simulated cursor positions
 uint32_t global_x = 0, global_y = 0;
 
-void putpixel(uint32_t x, uint32_t y, uint32_t color) {
+void 
+putpixel(uint32_t x, uint32_t y, uint32_t color) 
+{
 	uint32_t loc    = (x*vbe_block->pixel_w)+(y*vbe_block->pitch);
 	vidmem[loc]     = color & 255;
 	vidmem[loc+1]   = (color >> 8)  & 255;
 	vidmem[loc+2]   = (color >> 16) & 255;
 }
 
-void cputchar(char c, uint32_t color) {
+void 
+cputchar(char c, uint32_t color) 
+{
 	uint32_t startx = global_x, starty = global_y;  // Set local X and Y to emulated cursor
 	switch (c) {
 		case '\n':
@@ -61,12 +67,16 @@ void cputchar(char c, uint32_t color) {
 }
 
 // The only original screen.h function that still works in VESA mode
-void puts(const char* data) {
+void 
+puts(const char* data) 
+{
 	for (;*data!='\0';data++)
 		putchar(*data);
 }
 
-void cputs(const char *str, uint32_t color) {
+void 
+cputs(const char *str, uint32_t color) 
+{
 	for (;*str!='\0';str++)
 		cputchar(*str, color);
 }

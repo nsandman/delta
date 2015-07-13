@@ -1,6 +1,8 @@
 #include <stringf.h>
 
-char *strcat(char *dest, const char *src) {
+char*
+strcat(char *dest, const char *src) 
+{
 	char *rdest = dest;
 	while (*dest)
 		dest++;
@@ -8,13 +10,17 @@ char *strcat(char *dest, const char *src) {
 	return rdest;
 }
 
-size_t strlen(const char *str) {
+size_t 
+strlen(const char *str) 
+{
 	size_t i = 0;
 	while (str[++i]);
 	return i;
 }
 
-void* memcpy(void* s1, const void* s2, size_t n) {
+void* 
+memcpy(void* s1, const void* s2, size_t n) 
+{
   void* b = s1;
   while (n--)
   {
@@ -25,7 +31,9 @@ void* memcpy(void* s1, const void* s2, size_t n) {
   return b;
 }
 
-void *memmove (void *destaddr, const void *sourceaddr, unsigned length) {
+void*
+memmove(void *destaddr, const void *sourceaddr, unsigned length) 
+{
   char *dest = destaddr;
   const char *source = sourceaddr;
   if (source < dest)
@@ -40,7 +48,9 @@ void *memmove (void *destaddr, const void *sourceaddr, unsigned length) {
   return destaddr;
 }
 
-void *memset(void *dst, register int c, register size_t n) {
+void*
+memset(void *dst, register int c, register size_t n) 
+{
 	if (n != 0) {
 		register char *d = dst;
 		do {

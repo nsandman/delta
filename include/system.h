@@ -8,9 +8,9 @@
 #define HEAP_IN_SZ 0x00000	// Initial heap size
 #define HEAP_MAX   1000000
 
-typedef struct {
+typedef struct bmt {
 	size_t size;
-	void *next;
+	struct bmt *next;
 	uint8_t isfree;
 	uint8_t magic;
 } block_meta_t;

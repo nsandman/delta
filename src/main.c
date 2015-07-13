@@ -4,7 +4,9 @@
 
 #define DELTA_VERSION 13276
 
-int kmain() {
+int 
+kmain() 
+{
 	idt_init();
 	vid_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);

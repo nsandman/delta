@@ -4,7 +4,9 @@ typedef unsigned char bool;
 #define false 0
 #define true  !false
 
-static int __fputhex(int n, bool upper) {
+static int 
+__fputhex(int n, bool upper) 
+{
 	int tmp, p = 0;
     char noZeroes = 1;
     int i;
@@ -41,7 +43,9 @@ static char* itoa(int val, int base){
 
 // This is my own, pretty clean (so I hope) implementation of vfprintf().
 // At least, I like it better than Torvalds's.
-int vprintf(const char *fmt, va_list arg) {
+int 
+vprintf(const char *fmt, va_list arg) 
+{
 	int len = 0;
 	bool pct = false;				// Is the next character a percent sign?
 	for (; *fmt != '\0'; fmt++, len++) {
@@ -131,7 +135,9 @@ int vprintf(const char *fmt, va_list arg) {
 	return len;
 }
 
-int printf(const char *fmt, ...) {
+int 
+printf(const char *fmt, ...) 
+{
 	va_list a;
 	va_start(a, fmt);
 	int y = vprintf(fmt, a);

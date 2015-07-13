@@ -31,7 +31,7 @@ typedef struct fs_node {
 	struct vfs_node *ptr;
 } vfs_node_t;
 
-extern fs_node_t *fs_root;
+extern vfs_node_t *fs_root;
 
 struct dirent {
 	char name[256];
@@ -47,5 +47,7 @@ enum vfs_flags {
 	FS_SYMLINK     = 0x06,
 	FS_MOUNTPOINT  = 0x08
 };
+
+uint32_t readfs(vfs_node_t*, uint32_t, uint32_t, uint8_t*);
 
 #endif

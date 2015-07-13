@@ -1,48 +1,71 @@
 include config.local
 
-ASM := $(shell which nasm)
-QMU := $(shell which qemu-system-x86_64)
-GCC := $(shell which clang)
-LNK := $(shell which $(TOOLPREFIX)ld)
-BKS := $(shell which bochs)
+ASM := nasm
+QMU := qemu-system-x86_64
+GCC := clang
+LNK := $(TOOLPREFIX)ld
+BKS := bochs
 
 CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
--fno-stack-protector -mno-red-zone -target x86_64-elf
-OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
+-fno-stack-protector -mno-red-zone -target x86_64-elf -Wno-int-to-pointer-cast
+OUT = out/interrupt_asm.o out/main.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o
 
 # Directories to search in
 VPATH = src:src/inc:src/asm:src/fs
 
-all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys out/delta.image
+all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys out/delta.img
 
 # Instead of running the provided "build.sh"
 include contrib/pure64/build.make
 
+characters := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+characters += a b c d e f g h i j k l m n o p q r s t u v w x y z 
+characters += 0 1 2 3 4 5 6 7 8 9 - _
+
+COLS := $(shell ./cmp.sh $(ASM) $(GCC) $(LNK) $(QMU))
+
 out:
-	mkdir -p out/
+	@mkdir -p out/
+
+print_spc = \
+@for i in {-2..$(COLS)}; do \
+	printf " "; \
+done
 
 # So if we change any headers, main.c will get recompiled
 out/main.o: src/main.c include/*.h
-	$(GCC) $(CFL) -o$@ $<
+	$(call print_spc)
+	@echo "$<\r[\033[1m$(GCC)\033[0m]"
+	@$(GCC) $(CFL) -o$@ $<
 
 out/%_asm.o: %.asm
-	$(ASM) -felf64 -o$@ $<
+	$(call print_spc)
+	@echo "$<\r[\033[1m$(ASM)\033[0m]"
+	@$(ASM) -felf64 -o$@ $<
 
-out/%.o: %.c
-	$(GCC) $(CFL) -o$@ $<
+out/%.o: %.c 
+	$(call print_spc)
+	@echo "$<\r[\033[1m$(GCC)\033[0m]"
+	@$(GCC) $(CFL) -o$@ $<
 
 out/kernel.sys: $(OUT)
-	$(LNK) -Tlink.ld $^ -o$@
+	$(call print_spc)
+	@echo "$@\r[\033[1m$(LNK)\033[0m]"
+	@$(LNK) -Tlink.ld $^ -o$@
 
-out/delta.image: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
-	bmfs $@ initialize 6M $^
+out/delta.img: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
+	$(call print_spc)
+	@echo "$^\r[\033[1mbmfs\033[0m]"
+	@bmfs $@ initialize 6M $^ &> /dev/null
 
 clean:
 	rm -rf out
 
 qemu: all
-	$(QMU) -m 265 -smp 2 -hda out/delta.image -name "Delta"
+	$(call print_spc)
+	@echo "out/delta.image\r[\033[1m$(QMU)\033[0m]"
+	@$(QMU) -m 265 -smp 2 -hda out/delta.img -name "Delta"
 
 bochs: all
 	$(BKS) -q
