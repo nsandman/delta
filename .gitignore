@@ -10,9 +10,10 @@ autom4te.cache
 Makefile 
 config.status
 
-# Random Bochs files
+# Bochs files
 copy.txt
-snapshot.tzt
+snapshot.txt
+snapshot.bmp
 
 # Visual Studio Code settings
 .settings
