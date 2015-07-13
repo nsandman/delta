@@ -79,14 +79,15 @@ isr_common_stub:
 	mov fs, ax
 	mov gs, ax
 
-	pop rdi
-	pop rsi
-	pop rbp
-	pop rsp
-	pop rbx
-	pop rdx
-	pop rcx
 	pop rax
+	pop rcx
+	pop rdx
+	pop rbx
+	pop rsp
+	pop rbp
+	pop rsi
+	pop rdi
+
 	add rsp, 8
 	sti
 	iretq
