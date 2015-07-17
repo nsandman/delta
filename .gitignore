@@ -18,3 +18,9 @@ snapshot.bmp
 # Visual Studio Code settings
 .settings
 .settings/*
+
+# Build tools binaries
+tools/create_initrd
+
+# The initial ramdisk
+initrd.img
