@@ -32,5 +32,6 @@ isr_handler(registers_t regs)
 	cputs(" (", 0xff0000);
 	cputs(regs.int_no<18?exceptions[regs.int_no]:"Reserved", 0xff0000);
 	cputs(")!", 0xff0000);
-	for(;;) __asm__("hlt");
+	for(;;) 
+		__asm__("hlt");
 }

@@ -8,8 +8,8 @@ BKS := bochs
 
 CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
 -fno-stack-protector -mno-red-zone -target x86_64-elf -Wno-int-to-pointer-cast
-OUT = out/interrupt_asm.o out/hdd_asm.o out/main.o out/system.o out/interrupt.o  \
-out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o
+OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
+out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o out/hdd.o
 
 # Directories to search in
 VPATH = src:src/inc:src/asm:src/fs
@@ -18,10 +18,6 @@ all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys ou
 
 # Instead of running the provided "build.sh"
 include contrib/pure64/build.make
-
-characters := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
-characters += a b c d e f g h i j k l m n o p q r s t u v w x y z 
-characters += 0 1 2 3 4 5 6 7 8 9 - _
 
 COLS := $(shell ./cmp.sh $(ASM) $(GCC) $(LNK) $(QMU))
 

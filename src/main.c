@@ -1,5 +1,6 @@
-#include <screen.h>
 #include <io.h>
+#include <hdd.h>
+#include <screen.h>
 #include <interrupt.h>
 
 #define DELTA_VERSION 13276
