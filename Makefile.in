@@ -11,10 +11,12 @@ CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o out/hdd.o
 
+TLS = tools/create_initrd
+
 # Directories to search in
 VPATH = src:src/inc:src/asm:src/fs
 
-all: out out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o $(OUT) out/kernel.sys out/delta.img
+all: out pure64 toolchain kernel
 
 # Instead of running the provided "build.sh"
 include contrib/pure64/build.make
@@ -28,6 +30,26 @@ print_spc = \
 @for i in {-2..$(COLS)}; do \
 	printf " "; \
 done
+
+tr:
+	@echo "\033[1;32mBuilding bootloader\033[0m"
+
+oz:
+	@echo "\033[1;32mBuilding tools\033[0m"
+
+gn: 
+	@echo "\033[1;32mBuilding kernel\033[0m"
+
+pure64: tr out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o
+
+toolchain: oz $(TLS)
+
+kernel: gn $(OUT) out/kernel.sys out/delta.img
+
+tools/%: tools/%.c
+	$(call print_spc)
+	@echo "$<\r[\033[1m$(GCC)\033[0m]"
+	@$(GCC) $< -std=c99 -O3 -o$@
 
 # So if we change any headers, main.c will get recompiled
 out/main.o: src/main.c include/*.h
@@ -56,7 +78,7 @@ out/delta.img: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
 	@bmfs $@ initialize 6M $^ &> /dev/null
 
 clean:
-	rm -rf out
+	rm -rf out $(TLS)
 
 qemu: all
 	$(call print_spc)
