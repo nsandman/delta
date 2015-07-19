@@ -24,3 +24,4 @@ tools/create_initrd
 
 # The initial ramdisk
 initrd.img
+*/initrd.img
