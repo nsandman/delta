@@ -45,6 +45,7 @@ However, on EVERY system, you need to build and install [BMFS](https://github.co
 git clone git://github.com/returninfinity/bmfs
 cd bmfs
 autoreconf -fi
+./configure
 make
 sudo make install
 cd ..
