@@ -23,8 +23,8 @@ snapshot.bmp
 .settings/*
 
 # Build tools binaries
-tools/g95				# Fortran compiler
-tools/bmfs				# Boot partition creator
+tools/g95
+tools/bmfs
 
 # The initial ramdisk
 initrd.img
