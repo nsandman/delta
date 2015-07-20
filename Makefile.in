@@ -11,17 +11,17 @@ CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o out/hdd.o
 
-TLS = tools/create_initrd
+TLS = 
 
 # Directories to search in
 VPATH = src:src/inc:src/asm:src/fs
 
-all: out pure64 toolchain kernel
+all: out pure64 kernel
 
 # Instead of running the provided "build.sh"
 include contrib/pure64/build.make
 
-COLS := $(shell ./cmp.sh $(ASM) $(GCC) $(LNK) $(QMU))
+COLS := $(shell tools/cmp.sh $(ASM) $(GCC) $(LNK) $(QMU))
 
 out:
 	@mkdir -p out/
@@ -34,15 +34,10 @@ done
 tr:
 	@echo "\033[1;32mBuilding bootloader\033[0m"
 
-oz:
-	@echo "\033[1;32mBuilding tools\033[0m"
-
 gn: 
 	@echo "\033[1;32mBuilding kernel\033[0m"
 
 pure64: tr out/bmfs_mbr.sys out/pure64.sys out/boot_asm.o
-
-toolchain: oz $(TLS)
 
 kernel: gn $(OUT) out/kernel.sys out/delta.img
 
@@ -75,7 +70,7 @@ out/kernel.sys: $(OUT)
 out/delta.img: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
 	$(call print_spc)
 	@echo "$^\r[\033[1mbmfs\033[0m]"
-	@bmfs $@ initialize 6M $^ &> /dev/null
+	@$(BMFS) $@ initialize 6M $^ &> /dev/null
 
 clean:
 	rm -rf out $(TLS)

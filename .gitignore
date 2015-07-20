@@ -6,9 +6,12 @@ out/*
 configure 
 config.log 
 config.local 
-autom4te.cache 
 Makefile 
 config.status
+confdefs.h
+
+autom4te.cache
+autom4te.cache/*
 
 # Bochs files
 copy.txt
@@ -20,7 +23,8 @@ snapshot.bmp
 .settings/*
 
 # Build tools binaries
-tools/create_initrd
+tools/g95				# Fortran compiler
+tools/bmfs				# Boot partition creator
 
 # The initial ramdisk
 initrd.img
