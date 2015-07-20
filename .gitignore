@@ -28,3 +28,4 @@ tools/bmfs
 
 # The initial ramdisk
 initrd.img
+*/initrd.img
