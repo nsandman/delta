@@ -75,6 +75,26 @@ start16:
 
 	call init_isa			; Setup legacy hardware
 
+	; This part is an extension for Delta by Noah Sandman
+	; https://en.wikipedia.org/wiki/INT_13H
+	mov ah, 0x08		; Get disk information
+
+	mov dl, 0x80		; Select the first available HDD
+
+	; Buggy BIOS stuff
+	xor esi, esi
+	xor di, di
+
+	int 0x13
+
+	; Now the BIOS does its thing.
+	; The number of heads - 1 are in dh, so
+	inc dh
+	mov ah, dh
+	mov edi, 0x5016
+	xor esi, esi
+	stosb
+
 ; Hide the hardware cursor (interferes with print_string_16 if called earlier)
 	mov ax, 0x0200			; VIDEO - SET CURSOR POSITION
 	mov bx, 0x0000			; Page number

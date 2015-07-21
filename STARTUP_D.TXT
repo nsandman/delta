@@ -1,0 +1,22 @@
+About the startup.d file:
+
+Once the kernel is finished loading its internal tasks, it needs a system
+to load. With Delta, this comes in the form of files on the boot partition.
+The kernel needs to know these files' names and what to do with them (load
+them in user space, kernel space, load to memory without executing, etc.). So,
+it looks for a file named startup.d that has a list of files and what to do 
+with them.
+
+SYNTAX:
+<filename>:<mode>
+
+Available modes are:
+ - 'u'    means load in user mode
+ - 'k'    means load in user mode
+ - 'lX'   means load at address X
+
+So, an example would be:
+testing.exdf:u
+
+OR:
+notify_on_startup.txt:l0x10000

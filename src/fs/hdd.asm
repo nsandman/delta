@@ -29,7 +29,6 @@ ata_lba_read:
 	shr eax, 8           ; Get bit 8 - 15 in AL
 	out dx, al
 
-
 	mov edx, 0x1F5       ; Port to send bit 16 - 23 of LBA
 	mov eax, ebx         ; Get LBA from EBX
 	shr eax, 16          ; Get bit 16 - 23 in AL
@@ -58,4 +57,4 @@ ata_lba_read:
 	pop rbx
 	pop rax
 	popfq
-			ret
+	ret

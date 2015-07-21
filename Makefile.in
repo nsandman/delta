@@ -9,7 +9,8 @@ BKS := bochs
 CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
 -fno-stack-protector -mno-red-zone -target x86_64-elf -Wno-int-to-pointer-cast
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
-out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o out/hdd.o
+out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o \
+out/hdd.o
 
 TLS = 
 
@@ -56,6 +57,11 @@ out/%_asm.o: %.asm
 	$(call print_spc)
 	@echo "$<\r[\033[1m$(ASM)\033[0m]"
 	@$(ASM) -felf64 -o$@ $<
+
+out/%_f.o: %.f
+	$(call print_spc)
+	@echo "$<\r[\033[1mg95\033[0m]"
+	@$(G95) -o $@ $<
 
 out/%.o: %.c 
 	$(call print_spc)

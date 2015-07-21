@@ -1,3 +1,10 @@
+# .gitignore
+# by Noah Sandman
+
+# Public Domain. Whatever,
+# if you're copying this,
+# I don't understand you.
+
 # Built binaries
 out
 out/*
@@ -23,9 +30,15 @@ snapshot.bmp
 .settings/*
 
 # Build tools binaries
-tools/g95
 tools/bmfs
 
 # The initial ramdisk
 initrd.img
 */initrd.img
+
+# I use these as references 
+# when I'm offline
+pdf
+pdf/*
+*.pdf
+*/*.pdf
