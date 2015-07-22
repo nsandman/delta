@@ -73,7 +73,7 @@ The Pure64 information table is located at `0x0000000000005000` and ends at `0x0
 <tr><td>0x5040</td><td>64-bit</td><td>HPET</td><td>Base memory address for the High Precision Event Timer</td></tr>
 <tr><td>0x5048</td><td>64-bit</td><td>LAPIC</td><td>Local APIC address</td></tr>
 <tr><td>0x5050 - 0x5067</td><td>64-bit</td><td>IOAPIC</td><td>IO-APIC addresses (based on IOAPIC_COUNT)</td></tr>
-<tr><td>0x5068 - 0x5088</td><td>&nbsp;</td><td>HDD_PARAMS</td><td>Hard drive parameters results buffer</td></tr>
+<tr><td>0x5068 - 0x5088</td><td>&nbsp;</td><td>HDD_PARAMS</td><td>Hard drive parameters <a href="https://en.wikipedia.org/wiki/INT_13H#INT_13h_AH.3D48h:_Extended_Read_Drive_Parameters">results buffer</a></td></tr>
 <tr><td>0x5100...</td><td>8-bit</td><td>APIC_ID</td><td>APIC ID's for valid CPU cores (based on CORES_ACTIVE)</td></tr>
 </table>
 
