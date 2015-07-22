@@ -11,7 +11,7 @@ Right now, not much is implemented, so this may change in the future.
 
 7. Delta needs a minimum 6MB [BMFS](https://github.com/ReturnInfinity/BMFS/wiki/BareMetal-File-System) partition to boot from. This must be initialized with the default MBR, pure64.sys, and kernel.sys.
 56. The filesystem partition is expended to be [AtheOS](https://en.wikipedia.org/wiki/AtheOS_File_System), but no finalizations have been made yet.
-90. Delta's userspace `libc` implementation will probably (hopefully) be some combination of [osdevlibc](https://code.google.com/p/osdevlibc/), [newlib](https://sourceware.org/newlib/), our code, and [jemalloc](http://www.canonware.com/jemalloc/).
+90. Delta's userspace `libc` implementation will probably (hopefully) be some combination of our code, Linux's first release (string.h) [osdevlibc](https://code.google.com/p/osdevlibc/) (libm), [newlib](https://sourceware.org/newlib/), and [jemalloc](http://www.canonware.com/jemalloc/).
 
 Delta versions are also going to be in alphabetical order (so there's no number weirdness). Here are the planned version names (so far):
 
@@ -29,7 +29,7 @@ Building Delta is very simple. On Ubuntu, just install some prerequisites first 
 sudo apt-get install nasm qemu
 ```
 
-**NOTE**: If you are on OS X, Delta will not compile with Apple's nasm. You need to install MacPorts and get all project dependencies using this command:
+**NOTE**: If you are on OS X, Delta will not compile with Apple's default nasm. You need to install MacPorts and get all project dependencies using this command:
 ``` bash
 sudo port install x86_64-elf-binutils autoconf automake libtool nasm qemu
 ```
@@ -40,19 +40,7 @@ brew install autoconf automake nasm qemu
 # However you're going to get binutils
 ```
 
-However, on EVERY system, you need to build and install [BMFS](https://github.com/ReturnInfinity/BMFS).
-```
-git clone git://github.com/returninfinity/bmfs
-cd bmfs
-autoreconf -fi
-./configure
-make
-sudo make install
-cd ..
-rm -rf bmfs
-```
-
-Then, just do:
+Just do:
 
 ```
 autoconf

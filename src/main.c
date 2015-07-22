@@ -14,20 +14,22 @@
 
 #define DELTA_VERSION 13276
 
-extern uint32_t end;		// Defined in link.ld
+extern uint32_t end;		// Declared in link.ld
 uint32_t kernel_end;
 
+// Initializes any non-constant data.
 void
-dat_init() {
+dat_init() 
+{
 	kernel_end = (uint32_t)&end;
 }
 
 int 
-kmain() 
+kmain()
 {
+	dat_init();
 	idt_init();
 	vid_init();
-	dat_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);
 	return 0xdea1;
 }

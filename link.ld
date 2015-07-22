@@ -7,7 +7,6 @@
 
 OUTPUT_FORMAT("binary")  /* Output a flat binary for Pure64 */
 STARTUP("out/boot_asm.o")
-ENTRY("start")
 
 SECTIONS
 {

@@ -9,11 +9,11 @@
 
 bits 64
 
-global start
+global _start
 extern kmain
 
 section .text
-	start:
+	_start:
 		cli				; Halt interrupts
 		call kmain
 		hlt

@@ -3,6 +3,9 @@
 #ifndef _INTERRUPT_
 #define _INTERRUPT_
 
+// To be written as, e.g. 2MiB (2*209715)
+#define MiB *209715
+
 typedef struct registers {
    uint64_t ds;                  // Data segment selector
    uint64_t rdi, rsi, rbp, rsp, rbx, rdx, rcx, rax; // Pushed in isr_common_stub

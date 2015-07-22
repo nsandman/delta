@@ -1,8 +1,9 @@
 #include <io.h>
 
-typedef unsigned char bool;
-#define false 0
-#define true  !false
+typedef enum {
+	false = 0,
+	true  = !false
+} bool;
 
 static int 
 __fputhex(int n, bool upper) 
@@ -51,15 +52,19 @@ vprintf(const char *fmt, va_list arg)
 	for (; *fmt != '\0'; fmt++, len++) {
 		if (pct) {
 			switch (*fmt) {
+				// print "%" if literal percent sign
 				case '%':
 					putchar('%');
 					break;
+				// string
 				case 's':
 					puts(va_arg(arg, const char*));	
 					break;
+				// signle character
 				case 'c':
 					putchar(va_arg(arg, int));
 					break;
+				// Unsigned int... signed doesn't work yet
 				case 'u':
 				case 'i':
 				case 'd':
@@ -87,16 +92,20 @@ vprintf(const char *fmt, va_list arg)
 						}
 					}
 					break;
+				// Lowercase hex
 				case 'x':
 					len += __fputhex(va_arg(arg, int), false)-1;
 					break;
+				// Uppercase hex
 				case 'X':
 					len += __fputhex(va_arg(arg, int), true)-1;
 					break;
+				// pointer
 				case 'p':
 					puts("0x");
 					len += __fputhex((int64_t)va_arg(arg, void*), false)-1;
 					break;
+				// Current string length into i, whicg is an int pointer
 				case 'n':
 					{
 						int *i = va_arg(arg, int*);
@@ -104,6 +113,7 @@ vprintf(const char *fmt, va_list arg)
 						*i = len+1;
 					}
 					break;
+				// Octal - problably broken
 				case 'o':
 					{
 						// Kind of a "meh" implementation of octal.
@@ -125,12 +135,7 @@ vprintf(const char *fmt, va_list arg)
 					putchar(*fmt);
 			}
 			pct = false;
-		} else {
-			if (*fmt == '%')
-				pct = true;
-			else
-				putchar(*fmt);
-		}
+		} else (*fmt == '%') ? pct = true : putchar(*fmt);
 	}
 	return len;
 }

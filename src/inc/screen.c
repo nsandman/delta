@@ -4,22 +4,22 @@
 // NOTE: This function isn't very well commented since info 
 // on how to find anything, and what any particular variable
 // is for is in screen.h.
-
 void 
 vid_init() 
 {
 	vbe_block->pitch    = *((uint16_t*)0x5c10);
 	vbe_block->lfb_addr = *((uint32_t*)0x5c28);
-	vbe_block->pixel_w  = ((*((uint8_t*)0x5c19))/8);
+	vbe_block->pixel_w  = *((uint8_t*)0x5c19)/8;
 	vbe_block->height   = *((uint16_t*)0x5c14);
 	vbe_block->width    = *((uint16_t*)0x5c12);
-	vbe_block->depth    = (*(uint8_t*)0x5c1f) + (*(uint8_t*)0x5c21) + (*(uint8_t*)0x5c23);
+	vbe_block->depth    = *(uint8_t*)0x5c1f + *(uint8_t*)0x5c21 + *(uint8_t*)0x5c23;
 	vidmem              = (uint8_t*)vbe_block->lfb_addr;    // Set the global vidmem pointer to the LFB address
 }
 
-// Simulated cursor positions
+// Simulated "cursor" positions
 uint32_t global_x = 0, global_y = 0;
 
+// Color in 0xRRGGBB format
 void 
 putpixel(uint32_t x, uint32_t y, uint32_t color) 
 {
@@ -51,8 +51,8 @@ cputchar(char c, uint32_t color)
 							putpixel(startx, starty, color);
 						loc += vbe_block->pitch;										 // Each row is 2 bytes
 						startx++;
-					} 
-					startx=global_x;
+					}
+					startx = global_x;
 					starty++;
 				}
 				global_x += CF_STYLES.FixedWidth;

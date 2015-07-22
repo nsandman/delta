@@ -8,6 +8,9 @@ PROJECT ADMIN (MAIN CODE AND DOCUMENTATION)
 
  * Ian Seyler -- ian.seyler@returninfinity.com
 
+SLIGHT DELTA-SPECIFIC MODIFICATIONS
+
+ * Noah Sandman -- nsandman09@gmail.com
 
 DEVELOPMENT AND TESTING
 
