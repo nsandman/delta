@@ -7,7 +7,7 @@ typedef struct bv {
 	uint64_t start;
 	uint64_t end;
 	uint16_t nfiles;
-	char    *files[nfiles];
+	char    *files[];
 } bmfs_volume_t;
 
 /*
