@@ -19,6 +19,7 @@
 
 USE16
 ORG 0x00008000
+
 start:
 	cli				; Disable all interrupts
 	xor eax, eax
@@ -44,7 +45,6 @@ align 16
 
 USE16
 start16:
-
 ; Configure serial port
 	xor dx, dx			; First serial port
 	mov ax, 0000000011100011b	; 9600 baud, no parity, 1 stop bit, 8 data bits
@@ -80,16 +80,6 @@ start16:
 	mov bx, 0x0000			; Page number
 	mov dx, 0x2000			; Row / Column
 	int 0x10
-
-; Get disk drive information
-; en.wikipedia.org/wiki/INT_13H#INT_13h_AH.3D48h:_Extended_Read_Drive_Parameters
-	mov ah, 0x48
-	mov dl, 0x80		; Select first HDD
-
-	xor edi, edi			; Make sure ds is empty so there's no result buffer offset
-	mov si, 0x5068
-
-	int 0x13
 
 ; At this point we are done with real mode and BIOS interrupts. Jump to 32-bit mode.
 	lgdt [cs:GDTR32]		; Load GDT register
@@ -537,12 +527,12 @@ endmemcalc:
 	mov rax, [os_HPETAddress]
 	stosq
 
-	mov di, 0x5048
+	mov di, 0x5060
 	mov rax, [os_LocalAPICAddress]
 	stosq
 	xor ecx, ecx
 	mov cl, [os_IOAPICCount]
-	mov rsi, 0x5050
+	mov rsi, os_IOAPICAddress
 nextIOAPIC:
 	lodsq
 	stosq
@@ -550,13 +540,13 @@ nextIOAPIC:
 	cmp cl, 0
 	jne nextIOAPIC
 
-	;mov di, 0x5080
-	;mov eax, [VBEModeInfoBlock.PhysBasePtr]		; Base address of video memory (if graphics mode is set)
-	;stosd
-	;mov eax, [VBEModeInfoBlock.XResolution]		; X and Y resolution (16-bits each)
-	;stosd
-	;mov al, [VBEModeInfoBlock.BitsPerPixel]		; Color depth
-	;stosb
+	mov di, 0x5080
+	mov eax, [VBEModeInfoBlock.PhysBasePtr]		; Base address of video memory (if graphics mode is set)
+	stosd
+	mov eax, [VBEModeInfoBlock.XResolution]		; X and Y resolution (16-bits each)
+	stosd
+	mov al, [VBEModeInfoBlock.BitsPerPixel]		; Color depth
+	stosb
 
 ; Initialization is now complete... write a message to the screen
 	mov rsi, msg_done

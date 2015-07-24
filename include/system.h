@@ -6,7 +6,7 @@
 
 extern uint32_t kernel_end;				// main.c
 
-#define HEAP_START kernel_end
+#define HEAP_START kernel_end+HDDBUF_SIZE
 #define HEAP_IN_SZ 0x00000				// Initial heap size
 #define HEAP_MAX   1000000
 

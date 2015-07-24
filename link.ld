@@ -29,5 +29,5 @@ SECTIONS
 		*(.bss)
 		. = ALIGN(4K);
 	}
-	end = .;	/* Kernel ending address */
+	kernel_end = .;	/* Kernel ending address */
 }

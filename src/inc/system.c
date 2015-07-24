@@ -1,6 +1,7 @@
+#include <io.h>
+#include <hdd.h>
 #include <system.h>
 #include <stringf.h>
-#include <io.h>
 
 uint32_t heap_cs = HEAP_IN_SZ;	// Current heap size
 

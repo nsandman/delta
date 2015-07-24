@@ -1,0 +1,8 @@
+Contributors:
+	Bootloader (Pure64) originally by Ian Seyler
+	Delta:
+		- Noah Sandman (main source)
+		- Trinopoty    (HDD read/write)
+		- Riciery Leal (VCR OSD Mono)
+		Retired:
+			- iKnow Channel (old text mode screen functions)

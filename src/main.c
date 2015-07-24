@@ -14,22 +14,16 @@
 
 #define DELTA_VERSION 13276
 
-extern uint32_t end;		// Declared in link.ld
-uint32_t kernel_end;
-
-// Initializes any non-constant data.
-void
-dat_init() 
-{
-	kernel_end = (uint32_t)&end;
-}
+extern uint32_t kernel_end;		// Declared in link.ld
 
 int 
 kmain()
 {
-	dat_init();
 	idt_init();
 	vid_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);
+
+	hdd_info_t block;
+	get_params(&block);
 	return 0xdea1;
 }
