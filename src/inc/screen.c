@@ -30,13 +30,13 @@ putpixel(uint32_t x, uint32_t y, uint32_t color)
 	// vidmem[loc+2] = (color >> 16) & 255;
 	__asm(
 		"movl %0, %%edi;"
-		"movl %1, %%ebx;" 
-		"addq %%rbx, %%rdi;"
+		"movl %k1, %%ebx;" 
+		"addl %%ebx, %%edi;"
 		"movl %2, %%eax;"
 		"stosb;"
 		"shrl $8, %%eax;"
 		"stosw;" : :
-		"m"(loc), "r"((uint32_t)vidmem), "m"(color)
+		"m"(loc), "r"(vidmem), "m"(color)
 	);
 }
 

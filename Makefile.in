@@ -6,22 +6,23 @@ GCC := clang
 LNK := $(TOOLPREFIX)ld
 BKS := bochs
 
-CFL = -c -ffreestanding -Wall -Wextra -Iinclude -nostdlib -std=c99 \
+CFL = -c -ffreestanding -Wall -Wextra -Iinclude -Icontrib/cjson -nostdlib -std=c99 \
 -fno-stack-protector -mno-red-zone -target x86_64-elf -Wno-int-to-pointer-cast
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o \
-out/hdd.o out/bmfs.o
+out/hdd.o out/bmfs.o out/vsprintf.o out/cJSON.a
 
 # Tools to build
 TLS = 
 
 # Directories to search in
-VPATH = src:src/inc:src/asm:src/fs
+VPATH = src:src/inc:src/asm:src/fs:src/linux
 
 all: out pure64 kernel
 
-# Instead of running the provided "build.sh"
+# Build third-party "contrib" targets
 include contrib/pure64/build.make
+include contrib/cjson//build.make
 
 COLS := $(shell tools/cmp.sh $(ASM) $(GCC) $(LNK) $(QMU))
 
@@ -62,7 +63,7 @@ out/%_asm.o: %.asm
 out/%_f.o: %.f
 	$(call print_spc)
 	@echo "$<\r[\033[1mg95\033[0m]"
-	@$(G95) -o $@ $<
+	@$(G95) -c -o $@ $<
 
 out/%.o: %.c 
 	$(call print_spc)
@@ -74,7 +75,7 @@ out/kernel.sys: $(OUT)
 	@echo "$@\r[\033[1m$(LNK)\033[0m]"
 	@$(LNK) -Tlink.ld $^ -o$@
 
-out/delta.img: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys
+out/delta.img: out/bmfs_mbr.sys out/pure64.sys out/kernel.sys startup.d
 	$(call print_spc)
 	@echo "$^\r[\033[1mbmfs\033[0m]"
 	@$(BMFS) $@ initialize 6M $^ &> /dev/null
