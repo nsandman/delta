@@ -87,6 +87,39 @@ puts(const char* data)
 		putchar(*data);
 }
 
+char* 
+strcpy(char *strDest, const char *strSrc)
+{
+    if (strDest!=NULL || strSrc!=NULL)
+    	return NULL;
+    char *temp = strDest;
+    while((*strDest++ = *strSrc++)); // or while((*strDest++=*strSrc++) != '\0');
+    return temp;
+}
+
+// THESE are from Apple Open Source.
+int
+strncmp(const char *s1, const char *s2, size_t n)
+{
+    for ( ; n > 0; s1++, s2++, --n)
+  if (*s1 != *s2)
+      return ((*(unsigned char *)s1 < *(unsigned char *)s2) ? -1 : +1);
+  else if (*s1 == '\0')
+      return 0;
+    return 0;
+}
+
+char*
+strchr(const char *s, int c)
+{
+    const char ch = c;
+
+    for ( ; *s != ch; s++)
+        if (*s == '\0')
+            return 0;
+    return (char *)s;
+}
+
 void 
 cputs(const char *str, uint32_t color) 
 {

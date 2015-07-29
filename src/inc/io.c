@@ -5,6 +5,16 @@ typedef enum {
 	true  = !false
 } bool;
 
+int 
+sprintf(char *str, const char *fmt, ...)
+{
+	va_list arg;
+	va_start(arg, fmt);
+	int y = vsprintf(str, fmt, arg);
+	va_end(arg);
+	return y;
+}
+
 static int 
 __fputhex(int n, bool upper) 
 {
