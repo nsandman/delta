@@ -12,6 +12,7 @@ OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o \
 out/hdd.o out/bmfs.o
 
+# Tools to build
 TLS = 
 
 # Directories to search in

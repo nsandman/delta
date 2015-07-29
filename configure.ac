@@ -34,10 +34,10 @@ fi
 TOOLPREFIX=""
 GNINETYFIVE="g95"
 
-AC_CHECK_PROG(HAVE_G95, x86_64-elf-gfortran, yes, no)
-if test "$HAVE_G95" = "no"; then
-	AC_MSG_ERROR([Please install (or build) x86_64-elf-gfortran!])
-fi
+#AC_CHECK_PROG(HAVE_G95, x86_64-elf-gfortran, yes, no)
+#if test "$HAVE_G95" = "no"; then
+#	AC_MSG_ERROR([Please install (or build) x86_64-elf-gfortran!])
+#fi
 
 # Check for C compiler and binutils
 PLATFORM=`uname`
