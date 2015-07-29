@@ -23,10 +23,23 @@ uint32_t global_x = 0, global_y = 0;
 void 
 putpixel(uint32_t x, uint32_t y, uint32_t color) 
 {
-	uint32_t loc    = (x*vbe_block->pixel_w)+(y*vbe_block->pitch);
-	vidmem[loc]     = color & 255;
-	vidmem[loc+1]   = (color >> 8)  & 255;
-	vidmem[loc+2]   = (color >> 16) & 255;
+	uint32_t loc = (x*vbe_block->pixel_w)+(y*vbe_block->pitch);
+	// This assembly does the same thing as the following C code:
+	// vidmem[loc]   = color & 255;
+	// vidmem[loc+1] = (color >> 8)  & 255;
+	// vidmem[loc+2] = (color >> 16) & 255;
+	__asm(
+		"movl %0, %%edi;"
+		"movl %1, %%ebx;" 
+		"addq %%rbx, %%rdi;"
+		"movl %2, %%eax;"
+		"stosb;"
+		"shrl $8, %%eax;"
+		"stosb;"
+		"shrl $8, %%eax;"
+		"stosb;" : :
+		"m"(loc), "r"((uint32_t)vidmem), "m"(color)
+	);
 }
 
 void 

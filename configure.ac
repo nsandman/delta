@@ -34,19 +34,9 @@ fi
 TOOLPREFIX=""
 GNINETYFIVE="g95"
 
-AC_CHECK_PROG(HAVE_G95, g95, yes, no)
+AC_CHECK_PROG(HAVE_G95, x86_64-elf-gfortran, yes, no)
 if test "$HAVE_G95" = "no"; then
-	mkdir -p tmp/g95
-	cd tmp
-	curl http://ftp.g95.org/g95_source.tgz > g95_src.tgz
-	tar -xf g95_src.tgz -C ./g95 --strip-components=1
-	cd g95
-	./configure --prefix="$DIRNAMENOW/tools" --bindir="$DIRNAMENOW/tools" --program-prefix="" -q
-	make
-	make install
-	GNINETYFIVE="tools/g95"
-	cd ../..
-	mv `find tools/*-g95` tools/g95
+	AC_MSG_ERROR([Please install (or build) x86_64-elf-gfortran!])
 fi
 
 # Check for C compiler and binutils

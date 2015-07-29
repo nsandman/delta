@@ -18,9 +18,9 @@ readsector(uint32_t lba, uint8_t nsect, uint64_t addr)
 {
 	// The assembly just moves the paramters into place...
 	__asm(
-		"mov %0, %%rdi\n"
-		"mov %1, %%cl\n"
-		"mov %2, %%eax\n" : :
+		"mov %0, %%rdi;"
+		"mov %1, %%cl;"
+		"mov %2, %%eax;" : :
 		"r"(addr), "r"(nsect), "r"(lba)
 	);
 	ata_lba_read(); // ...and then calls the function. I could

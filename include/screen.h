@@ -22,6 +22,8 @@ typedef struct {
 vbe_info_t *vbe_block; 
 uint8_t    *vidmem;
 
+extern void putpx_int();
+
 // The offset of a character. The font bitmaps start at ASCII 32, so
 // a space would be NotCourierSans_Bitmaps[0]. The difference is 32.
 #define CHAR_OFFSET  32
@@ -36,5 +38,6 @@ void putpixel(uint32_t, uint32_t, uint32_t);
 void cputchar(char, uint32_t);
 void puts(const char*);
 void cputs(const char*, uint32_t);
+void fill_with_white();
 
 #endif

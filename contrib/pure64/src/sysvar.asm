@@ -57,7 +57,7 @@ screen_rows:		db 25
 hextable: 		db '0123456789ABCDEF'
 
 ;STRINGS
-msg_initializing:	db 'Pure64 v0.6.1 - www.returninfinity.com', 13, 10, 13, 10, 'Initializing system... ', 0
+msg_initializing:	db 'Delta Pure64 v0.7', 13, 10, 13, 10, 'Initializing system... ', 0
 msg_done:		db ' Done', 0
 msg_CPU:		db '[CPU: ', 0
 msg_mhz:		db 'MHz x', 0
