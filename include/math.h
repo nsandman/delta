@@ -1,3 +1,6 @@
+#ifndef _MATH_
+#define _MATH_
+
 #define DBL_EPSILON 2.2204460492503131E-16
 #define INT_MAX 2147483647
 #define INT_MIN -2147483648 
@@ -12,3 +15,5 @@ double log(double);
 int isupper(int);
 int tolower(int);
 double pow(double, double);
+
+#endif
