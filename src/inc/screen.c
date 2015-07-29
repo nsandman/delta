@@ -35,8 +35,9 @@ putpixel(uint32_t x, uint32_t y, uint32_t color)
 		"movl %2, %%eax;"
 		"stosb;"
 		"shrl $8, %%eax;"
-		"stosw;" : :
-		"m"(loc), "r"(vidmem), "m"(color)
+		"stosw;" :
+		: "m"(loc), "r"(vidmem), "m"(color)
+		: "edi", "ebx", "eax"
 	);
 }
 

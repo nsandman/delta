@@ -32,6 +32,10 @@
 #include <limits.h>
 #include <ctype.h>
 */
+#include <stringf.h>
+#include <system.h>
+#include <math.h>
+#include <io.h>
 #include "cJSON.h"
 
 static const char *ep;

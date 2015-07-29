@@ -1,3 +1,4 @@
+# Build static lib from object files
 out/cJSON.a: out/cJSON_cjson.o
 	$(call print_spc)
 	@echo "$^\r[\033[1m$(TOOLPREFIX)ar\033[0m]"
