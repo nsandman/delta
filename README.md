@@ -2,7 +2,7 @@
   <img alt="Delta" src="http://s18.postimg.org/xjr7aiau1/delta.png" height="80" />
 </p>
 <p align="center">
-  <a href="https://travis-ci.org/aventuretech/delta"><img src="https://travis-ci.org/aventuretech/delta.svg?branch=master" /></a>
+  <a href="https://travis-ci.org/realdelta/delta"><img src="https://travis-ci.org/realdelta/delta.svg" /></a>
 </p>
 
 Delta is a lightweight x86-64 OS. It is loaded by the [Pure64](https://github.com/ReturnInfinity/Pure64) bootloader, and so is quick and efficient. 
