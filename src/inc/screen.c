@@ -29,16 +29,13 @@ putpixel(uint32_t x, uint32_t y, uint32_t color)
 	// vidmem[loc+1] = (color >> 8)  & 255;
 	// vidmem[loc+2] = (color >> 16) & 255;
 	__asm(
-		"movl %0, %%edi;"
-		"movl %k1, %%ebx;" 
-		"addl %%ebx, %%edi;"
-		"movl %2, %%eax;"
-		"stosb;"
-		"shrl $8, %%eax;"
-		"stosw;" :
-		: "m"(loc), "r"(vidmem), "m"(color)
-		: "edi", "ebx", "eax"
-	);
+        "movb %b[col], (%[ptr]);"
+        "shrl $8, %[col];"
+        "movw %w[col], 1(%[ptr]);"
+        : [col] "+r" (color),  "=m" (vidmem[loc])
+        : [ptr] "r" (vidmem+loc)
+        :
+    );
 }
 
 void 
@@ -59,7 +56,7 @@ cputchar(char c, uint32_t color)
 				int loc = startx*vbe_block->pixel_w;
 				for (uint8_t a = 0; a < CHAR_SIZE; a+=2) {					 // Loop through each byte
 					for (uint8_t b = 15; b != 0; b--) {                       // Loop through each bit of that byte
-						if ((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1)
+						if (((CURR_FONT[char_idx+((b<7)?(a+1):a)])>>((b>6)?(b-7):b)&1))
 							putpixel(startx, starty, color);
 						loc += vbe_block->pitch;										 // Each row is 2 bytes
 						startx++;
@@ -94,29 +91,6 @@ strcpy(char *strDest, const char *strSrc)
     char *temp = strDest;
     while((*strDest++ = *strSrc++)); // or while((*strDest++=*strSrc++) != '\0');
     return temp;
-}
-
-// THESE are from Apple Open Source.
-int
-strncmp(const char *s1, const char *s2, size_t n)
-{
-    for ( ; n > 0; s1++, s2++, --n)
-  if (*s1 != *s2)
-      return ((*(unsigned char *)s1 < *(unsigned char *)s2) ? -1 : +1);
-  else if (*s1 == '\0')
-      return 0;
-    return 0;
-}
-
-char*
-strchr(const char *s, int c)
-{
-    const char ch = c;
-
-    for ( ; *s != ch; s++)
-        if (*s == '\0')
-            return 0;
-    return (char *)s;
 }
 
 void 

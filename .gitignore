@@ -42,3 +42,7 @@ pdf
 pdf/*
 *.pdf
 */*.pdf
+
+# Custom push script to
+# copy "Makefile" into "Makefile.in"
+push.sh

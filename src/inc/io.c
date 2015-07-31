@@ -70,7 +70,7 @@ vprintf(const char *fmt, va_list arg)
 				case 's':
 					puts(va_arg(arg, const char*));	
 					break;
-				// signle character
+				// single character
 				case 'c':
 					putchar(va_arg(arg, int));
 					break;

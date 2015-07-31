@@ -59,3 +59,13 @@ memset(void *dst, register int c, register size_t n)
 	}
 	return dst;
 }
+
+int isupper(int c) {
+  return c >= 'A' && c <= 'Z';
+}
+
+int tolower(int c) {
+  if (isupper(c))
+    return c + 'a' - 'A';
+  return c;
+}

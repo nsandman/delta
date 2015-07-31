@@ -12,8 +12,6 @@ double nearbyint(double);
 double floor(double);
 double log2(double);
 double log(double);
-int isupper(int);
-int tolower(int);
 double pow(double, double);
 
 #endif

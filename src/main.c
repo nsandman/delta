@@ -12,7 +12,7 @@
 #include <screen.h>
 #include <interrupt.h>
 
-#define DELTA_VERSION 13276
+#define DELTA_VERSION 393276
 
 extern uint32_t kernel_end;		// Declared in link.ld
 
@@ -22,5 +22,6 @@ kmain()
 	idt_init();
 	vid_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);
+	//readsector(0, 1, DEBUG_ADDR);
 	return 0xdea1;
 }

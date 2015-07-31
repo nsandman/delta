@@ -19,6 +19,5 @@ typedef struct {
 } hdd_info_t;
 
 void readsector(uint32_t, uint8_t, uint64_t);
-void get_params(hdd_info_t*);
 
 #endif

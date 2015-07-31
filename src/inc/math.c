@@ -1,3 +1,5 @@
+#include <math.h>
+
 #define DBL_EPSILON 2.2204460492503131E-16
 #define INT_MAX 2147483647
 #define INT_MIN -2147483648 
@@ -35,16 +37,6 @@ double log(double x) {
   double ln2;
   __asm("fldln2" : "=t"(ln2));
   return ln2 * log2(x);
-}
-
-int isupper(int c) {
-  return c >= 'A' && c <= 'Z';
-}
-
-int tolower(int c) {
-  if (isupper(c))
-    return c + 'a' - 'A';
-  return c;
 }
 
 double pow(double x, double y) {

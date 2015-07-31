@@ -13,4 +13,7 @@ void *memcpy(void*, const void*, size_t);
 void *memmove(void*, const void*, unsigned);
 void *memset(void*, register int, register size_t);
 
+int tolower(int);
+int isupper(int);
+
 #endif

@@ -50,7 +50,7 @@ if test "$PLATFORM" = "Linux"; then
 elif test "$PLATFORM" = "Darwin"; then
 	AC_CHECK_PROG(HAVE_BINUTILS, x86_64-elf-ld, yes, no)
 	if test "$HAVE_BINUTILS" = "no"; then
-		AC_MSG_ERROR([You need to install x86_64-elf-binutils (and probably x86_64-elf-gcc) from Macports!])
+		AC_MSG_ERROR([You need to install x86_64-elf-binutils from Macports!])
 	fi
 	AC_PROG_CC([clang])
 	TOOLPREFIX="x86_64-elf-"
