@@ -58,7 +58,7 @@ else
 	AC_MSG_ERROR([Your operating system is not supported!])
 fi
 
-echo "TOOLPREFIX=$TOOLPREFIX\nG95=$GNINETYFIVE\nBMFS=$BMFSPATH" > config.local
+printf "TOOLPREFIX=$TOOLPREFIX\nG95=$GNINETYFIVE\nBMFS=$BMFSPATH" > config.local
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdarg.h])
