@@ -1,0 +1,13 @@
+#! /bin/bash
+
+echo "Cloning Pure64"
+git clone https://github.com/alexroot-/Pure64 contrib/pure64
+curl "http://pastebin.com/raw/wQvdBR6r" > contrib/pure64/build.make
+
+echo "Building ./config.local with default settings"
+echo "TOOLPREFIX=x86_64-elf- \
+G95=g95 \
+BMFS=bmfs" > config.local
+
+#echo "Cloning cJSON"
+#curl "http://pastebin.com/raw/Xs0A3qkR" > contrib/cjson/build.make
