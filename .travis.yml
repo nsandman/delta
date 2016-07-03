@@ -1,12 +1,10 @@
 language: c
 
 before_install:
-  - sudo apt-get update; sudo apt-get install nasm qemu wget
-  - wget ftp://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz; tar -xvf autoconf-2.69.tar.xz; cd autoconf-2.69; ./configure; make; sudo make install; cd ..; rm -rf autoconf-2.69
+  - sudo apt-get update; sudo apt-get install nasm qemu
   - git clone git://github.com/returninfinity/bmfs b; cd b; autoreconf -fi; ./configure; make; sudo make install; cd ..
   - rm -rf b
 
 script:
-  - autoconf
   - ./configure
   - make

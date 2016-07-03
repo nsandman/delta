@@ -10,19 +10,18 @@ CFL = -c -ffreestanding -Wall -Wextra -Iinclude -Icontrib/cjson -nostdlib -std=c
 -fno-stack-protector -mno-red-zone -target x86_64-elf -Wno-int-to-pointer-cast
 OUT = out/main.o out/interrupt_asm.o out/system.o out/interrupt.o  \
 out/strings.o out/screen.o out/idt.o out/io.o out/vfs.o out/hdd_asm.o \
-out/hdd.o out/bmfs.o out/vsprintf.o out/cJSON.a
+out/hdd.o out/bmfs.o out/vsprintf.o
 
 # Tools to build
 TLS = 
 
 # Directories to search in
-VPATH = src:src/inc:src/asm:src/fs:src/linux
+VPATH = src:src/asm:src/fs:src/inc:src/linux
 
 all: out pure64 kernel
 
 # Build third-party "contrib" targets
 include contrib/pure64/build.make
-include contrib/cjson//build.make
 
 COLS := $(shell tools/cmp.sh $(ASM) $(GCC) $(LNK) $(QMU))
 

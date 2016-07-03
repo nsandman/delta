@@ -13,6 +13,7 @@
 #include <interrupt.h>
 
 #define DELTA_VERSION 393276
+#define DEBUG_ADDR    0x200000c
 
 extern uint32_t kernel_end;		// Declared in link.ld
 
@@ -22,6 +23,10 @@ kmain()
 	idt_init();
 	vid_init();
 	printf("Delta v%d \"Absinthe\"\n\n", DELTA_VERSION);
-	//readsector(0, 1, DEBUG_ADDR);
+	readsector(0, 1, DEBUG_ADDR);
+	int *hddtest;
+	*hddtest = DEBUG_ADDR;
+	printf("0x%x\n", hddtest);
+	puts("if you can see this, at least it's not hanging.");
 	return 0xdea1;
 }
